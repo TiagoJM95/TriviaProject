@@ -1,2 +1,6 @@
-package Game.Questions;public enum QuestionType {
+package Game.Questions;
+
+public enum QuestionType {
+    HISTORY,
+    GEOGRAPHY
 }
