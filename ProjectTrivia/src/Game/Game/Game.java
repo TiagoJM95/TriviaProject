@@ -20,17 +20,17 @@ import Game.Score.Score;
 
 public class Game implements Runnable{
 
-    private Server server;
-    private Set<PlayerHandler> playerList;
-    private ExecutorService gameService;
+    private final Server server;
+    private final Set<PlayerHandler> playerList;
+    private final ExecutorService gameService;
     private static final int MIN_PLAYERS = 2;
     private static final int MAX_PLAYERS = 6;
-    private boolean gameStarted;
-    private boolean gameEnded;
-    private Board board;
-    private Dice dice;
-    private Set<Questions> questionsList;
-    private Score score;
+    private final boolean gameStarted;
+    private final boolean gameEnded;
+    private final Board board;
+    private final Dice dice;
+    private final Set<Questions> questionsList;
+    private final Score score;
 
 
     public Game(Server server){
@@ -51,6 +51,7 @@ public class Game implements Runnable{
         while(!gameEnded){
 
             if(checkIfGameCanStart()){
+                System.out.println("StartGame!");
                 startGame();
             }
 
@@ -61,12 +62,16 @@ public class Game implements Runnable{
         }
     }
 
+    private void playGame() {
+    }
+
     public boolean isAcceptingPlayers(){
         return false;
     }
 
     public void acceptPlayer(Socket playerSocket){
-
+        gameService.submit(new PlayerHandler(playerSocket));
+        System.out.println("Player Accepted");
     }
 
     private boolean checkIfGameCanStart(){
@@ -103,9 +108,9 @@ public class Game implements Runnable{
     public class PlayerHandler implements Runnable{
 
         private String name;
-        private Socket playerSocket;
-        private BufferedReader reader;
-        private PrintWriter writer;
+        private final Socket playerSocket;
+        private final BufferedReader reader;
+        private final PrintWriter writer;
         private boolean inGame;
 
         public PlayerHandler(Socket playerSocket){
@@ -116,6 +121,48 @@ public class Game implements Runnable{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public void run() {
+            addPlayerToGame(this);
+            try {
+                defineUsername();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if(gameEnded){
+                try {
+                    quit();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        private void quit() throws IOException {
+            playerSocket.close();
+        }
+
+        private void addPlayerToGame(PlayerHandler playerHandler) {
+
+
+            if (playerList.contains(playerHandler)){
+                System.out.println("Player already on list");
+                return;
+            }
+
+            playerList.add(playerHandler);
+        }
+
+        private void defineUsername() throws IOException {
+            sendMessage("Define username: ");
+            this.name = reader.readLine();
+        }
+
+        private void sendMessage(String message){
+            writer.println(message);
         }
 
     }

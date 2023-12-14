@@ -19,6 +19,7 @@ public class Server {
        while(!serverSocket.isClosed()){
 
            if(!gameCreated()){
+               System.out.println("Create a game!");
               createGame();
            }
 
