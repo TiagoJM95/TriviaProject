@@ -44,6 +44,10 @@ public class Server {
         players.remove(playerHandler);
     }
 
+    public void broadcast(String string){
+        players.forEach(player -> player.send(string));
+    }
+
 
 
    public class PlayerHandler implements Runnable{

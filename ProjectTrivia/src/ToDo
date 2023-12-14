@@ -1,5 +1,30 @@
-Tabuleiro do jogo;
-Peças dos jogadores;
+Acabar server e client;
+
+
+Tabuleiro do jogo;                  //Classe Board;
+Peças dos jogadores;                //Classe Board;
+
+            //https://emojidb.org/java-emojis;
+
 Perguntas e respostas em listas;
 Dado;
 Pontuação;
+
+Tabuleiro imprime todas as jogadas com score;
+Imprimir dado;
+
+
+Comandos;
+Mensagens;
+
+
+
+
+
+
+
+
+
+
+
+API trivia;
