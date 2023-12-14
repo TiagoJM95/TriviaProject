@@ -1,18 +1,14 @@
 package ServerClient.Server.Server;
 
 import ServerClient.Server.Commands.Command;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,7 +18,7 @@ public class Server {
     private final List<PlayerHandler> players;
 
     public Server(){
-        players = new ArrayList<>();    //new CopyOnWriteArrayList<>()
+        players = new CopyOnWriteArrayList<>();
     }
 
     public void start() throws IOException {
@@ -33,7 +29,7 @@ public class Server {
 
     private void acceptConnection() throws IOException {
         Socket playerSocket = serverSocket.accept();
-        PlayerHandler playerHandler = new PlayerHandler();
+        PlayerHandler playerHandler = new PlayerHandler(playerSocket);
         service.submit(playerHandler);
     }
 
