@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ServerClient.Server.Commands.Command;
 import ServerClient.Server.Server.Server;
 import Game.Board.Board;
 import Game.Dice.Dice;
@@ -23,74 +21,99 @@ public class Game implements Runnable{
     private final Server server;
     private final Set<PlayerHandler> playerList;
     private final ExecutorService gameService;
-    private static final int MIN_PLAYERS = 2;
-    private static final int MAX_PLAYERS = 6;
-    private final boolean gameStarted;
-    private final boolean gameEnded;
+    private final int minPlayers = 2;
+    private final int maxPlayers = 6;
+    private boolean gameStarted;
+    private boolean gameEnded;
     private final Board board;
     private final Dice dice;
-    private final Set<Questions> questionsList;
+    private final List<Questions> questionsList;
     private final Score score;
 
 
     public Game(Server server){
         this.server = server;
-        this.gameService = Executors.newFixedThreadPool(MAX_PLAYERS);
+        this.gameService = Executors.newFixedThreadPool(maxPlayers);
         this.playerList = new HashSet<>();
         this.gameStarted = false;
         this.gameEnded = false;
         this.board = new Board();
         this.dice = new Dice();
-        this.questionsList = new HashSet<>();
+        this.questionsList = new ArrayList<>();
         this.score = new Score();
     }
 
 
     @Override
     public void run() {
-        while(!gameEnded){
+        while(!isGameEnded()){
 
             if(checkIfGameCanStart()){
-                System.out.println("StartGame!");
                 startGame();
             }
 
-            if(gameStarted){
-                playGame();
-                endGame();
+            if(isGameStarted()){
+                try {
+                    playGame();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            endGame();
+        }
+    }
+    private boolean checkIfGameCanStart(){
+        return playerList.size() >= minPlayers && !isAcceptingPlayers();
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    private void playGame() throws IOException {
+        for(PlayerHandler player : playerList){
+
+            if(player.inGame){
+
+                broadcast(player.username + "'s turn");
+                String playerMessage = player.readMessage();
+
+                if (player.isCommand(playerMessage)) {
+                    player.executeCommand(playerMessage);
+                }
+            }
+            if(isGameEnded()){
+                return;
             }
         }
     }
 
-    private void playGame() {
-    }
-
     public boolean isAcceptingPlayers(){
-        return false;
+        return playerList.size() < maxPlayers && !gameStarted;
     }
 
     public void acceptPlayer(Socket playerSocket){
         gameService.submit(new PlayerHandler(playerSocket));
-        System.out.println("Player Accepted");
-    }
-
-    private boolean checkIfGameCanStart(){
-        if(gameStarted){
-          return false;
-        }
-        return false;
     }
 
     private void startGame(){
+        gameStarted = true;
+        broadcast("Game has started");
+        broadcast(drawBoard());
+    }
 
+    private void broadcast(String message){
+        playerList.stream()
+                .filter(player -> player.inGame)
+                .forEach(player -> player.sendMessage(message));
     }
 
     private void playTurn(){
 
     }
 
-    private void drawBoard(){
-
+    private String drawBoard(){
+        return "Board";
     }
 
     private void checkIfGameCanEnd(){
@@ -98,7 +121,7 @@ public class Game implements Runnable{
     }
 
     private void endGame(){
-
+        gameEnded = true;
     }
 
     public boolean isGameStarted() {
@@ -107,10 +130,11 @@ public class Game implements Runnable{
 
     public class PlayerHandler implements Runnable{
 
-        private String name;
         private final Socket playerSocket;
         private final BufferedReader reader;
         private final PrintWriter writer;
+        private String username;
+        private String message;
         private boolean inGame;
 
         public PlayerHandler(Socket playerSocket){
@@ -123,29 +147,55 @@ public class Game implements Runnable{
             }
         }
 
+        private void sendMessage(String message){
+            writer.println(message);
+        }
+
+        private String readMessage() throws IOException {
+            return reader.readLine();
+        }
+
         @Override
         public void run() {
-            addPlayerToGame(this);
+
             try {
-                defineUsername();
+                addPlayerToGame(this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            if(gameEnded){
+            while(!isGameEnded()){
                 try {
-                    quit();
+                    message = reader.readLine();
+                    if(isCommand(message)){
+                        executeCommand(message);
+                        continue;
+                    }
+                    sendMessage("Invalid input");
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
+            try {
+                quit();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private void executeCommand(String message) {
+        }
+
+        private boolean isCommand(String message) {
+            return message.startsWith("/");
         }
 
         private void quit() throws IOException {
             playerSocket.close();
         }
 
-        private void addPlayerToGame(PlayerHandler playerHandler) {
+        private void addPlayerToGame(PlayerHandler playerHandler) throws IOException {
 
 
             if (playerList.contains(playerHandler)){
@@ -154,15 +204,12 @@ public class Game implements Runnable{
             }
 
             playerList.add(playerHandler);
+            defineUsername();
         }
 
         private void defineUsername() throws IOException {
             sendMessage("Define username: ");
-            this.name = reader.readLine();
-        }
-
-        private void sendMessage(String message){
-            writer.println(message);
+            this.username = reader.readLine();
         }
 
     }

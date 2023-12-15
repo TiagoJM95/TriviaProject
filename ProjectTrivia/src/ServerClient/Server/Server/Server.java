@@ -22,7 +22,7 @@ public class Server {
                createGame();
            }
 
-           if(!gameHasStarted()){
+           if(game.isAcceptingPlayers()){
                game.acceptPlayer(serverSocket.accept());
            }
 
