@@ -8,55 +8,54 @@ import java.net.Socket;
 
 public class Player {
     private Socket playerSocket;
-    BufferedReader consoleIn;
-    BufferedReader serverIn;
-    PrintWriter serverOut;
+    private boolean myTurn;
 
+    public Player(){
+        this.playerSocket = null;
+        this.myTurn = false;
+    }
 
     public void start(String host, int port) throws IOException {
-        initialize(host, port);
-        Thread thread = new Thread(new Listener(serverIn));
-        thread.start();
-        sendMessages();
-    }
-
-    private void sendMessages() throws IOException {
-        String messageToServer;
-
-        while(!playerSocket.isClosed()){
-
-            messageToServer = consoleIn.readLine();
-            serverOut.println(messageToServer);
-
-        }
-    }
-
-    private void initialize(String host, int port) throws IOException {
-
         playerSocket = new Socket(host, port);
-        consoleIn = new BufferedReader(new InputStreamReader(System.in));
-        serverIn = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
-        serverOut = new PrintWriter(playerSocket.getOutputStream(), true);
-
+        new Thread(new Listener()).start();
+        receiveGameMessages();
     }
 
-    static class Listener implements Runnable{
-        private final BufferedReader in;
+    private void receiveGameMessages() throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+        String gameMessage = in.readLine();
 
-        public Listener(BufferedReader serverIn){
-            this.in = serverIn;
+        if(isCommand(gameMessage)){
+            dealWithCommand(gameMessage);
         }
+        System.out.println(gameMessage);
+    }
+
+    private boolean isCommand(String gameMessage) {
+        return gameMessage.startsWith("/");
+    }
+
+    private void dealWithCommand(String gameMessage){
+        System.out.println("Player.java : dealWithCommand()");
+    }
+
+    class Listener implements Runnable{
 
         @Override
         public void run() {
+            try {
+                PrintWriter out  = new PrintWriter(playerSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+                String message;
 
-            String messageFromServer = "A";
-
-            try{
-                while(!(messageFromServer = in.readLine()).equals("disconnect")){
-                    System.out.println(messageFromServer);
+                while((message =in.readLine())!=null){
+                    if(myTurn){
+                        out.println(message);
+                    }
+                    myTurn = false;
                 }
-            } catch (IOException e){
+                //quit();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
