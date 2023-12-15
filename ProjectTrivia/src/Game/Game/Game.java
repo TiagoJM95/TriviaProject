@@ -1,215 +1,160 @@
 package Game.Game;
 
+import ServerClient.Server.Server.Server;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ServerClient.Server.Commands.Command;
-import ServerClient.Server.Server.Server;
-import Game.Board.Board;
-import Game.Dice.Dice;
-import Game.Questions.Questions;
-import Game.Score.Score;
-
 public class Game implements Runnable{
-
-    private final Server server;
-    private final Set<PlayerHandler> playerList;
-    private final ExecutorService gameService;
+    private final Server SERVER;
     private final int minPlayers = 2;
     private final int maxPlayers = 6;
+    private final List<Handler> playersList;
+    private final ExecutorService service;
     private boolean gameStarted;
     private boolean gameEnded;
-    private final Board board;
-    private final Dice dice;
-    private final List<Questions> questionsList;
-    private final Score score;
-
 
     public Game(Server server){
-        this.server = server;
-        this.gameService = Executors.newFixedThreadPool(maxPlayers);
-        this.playerList = new HashSet<>();
-        this.gameStarted = false;
-        this.gameEnded = false;
-        this.board = new Board();
-        this.dice = new Dice();
-        this.questionsList = new ArrayList<>();
-        this.score = new Score();
+        this.SERVER = server;
+        service = Executors.newFixedThreadPool(maxPlayers);
+        playersList = new ArrayList<>();
+        gameStarted = false;
+        gameEnded = false;
     }
-
-
     @Override
-    public void run() {
-        while(!isGameEnded()){
+    public void run(){
+        while(!gameEnded){
 
-            if(checkIfGameCanStart()){
+            if(checkIfGameCanStart() && !gameStarted){
                 startGame();
             }
-
-            if(isGameStarted()){
-                try {
-                    playGame();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            endGame();
-        }
-    }
-    private boolean checkIfGameCanStart(){
-        return playerList.size() >= minPlayers && !isAcceptingPlayers();
-    }
-
-    public boolean isGameEnded() {
-        return gameEnded;
-    }
-
-    private void playGame() throws IOException {
-        for(PlayerHandler player : playerList){
-
-            if(player.inGame){
-
-                broadcast(player.username + "'s turn");
-                String playerMessage = player.readMessage();
-
-                if (player.isCommand(playerMessage)) {
-                    player.executeCommand(playerMessage);
-                }
-            }
-            if(isGameEnded()){
-                return;
+            if(gameStarted && !gameEnded){
+                playTurn();
             }
         }
+        endGame();
     }
 
     public boolean isAcceptingPlayers(){
-        return playerList.size() < maxPlayers && !gameStarted;
+        return playersList.size() < maxPlayers && !gameStarted;
     }
 
-    public void acceptPlayer(Socket playerSocket){
-        gameService.submit(new PlayerHandler(playerSocket));
+    public void acceptPlayer(Socket socket){
+        service.submit(new Handler(socket));
+    }
+
+    private void addPlayerToList(Handler handler){
+        playersList.add(handler);
+        handler.send("Welcome");
+    }
+
+    private boolean checkIfGameCanStart(){
+        return !isAcceptingPlayers() || playersList.size() >= minPlayers;
+        //Add time condition;
     }
 
     private void startGame(){
         gameStarted = true;
-        broadcast("Game has started");
+        broadcast("Game Started");
         broadcast(drawBoard());
     }
 
-    private void broadcast(String message){
-        playerList.stream()
-                .filter(player -> player.inGame)
-                .forEach(player -> player.sendMessage(message));
-    }
-
     private void playTurn(){
+        for(Handler handler : playersList){
+            if(!handler.hasLeft()){
 
+                broadcast("Handlers name turn");
+                handler.send("/your turn");
+            }
+        }
     }
 
     private String drawBoard(){
         return "Board";
     }
 
-    private void checkIfGameCanEnd(){
-
+    public void broadcast(String message){
+        playersList.forEach(player -> player.send(message));
     }
 
-    private void endGame(){
+    public void endGame(){
+        broadcast("Game Ended");
+        playersList.forEach(Handler::quit);
         gameEnded = true;
     }
 
-    public boolean isGameStarted() {
-        return gameStarted;
-    }
+    public class Handler implements Runnable{
+        private String name;
+        private final Socket socket;
+        private BufferedReader in;
+        private PrintWriter out;
+        private boolean hasLeft;
 
-    public class PlayerHandler implements Runnable{
 
-        private final Socket playerSocket;
-        private final BufferedReader reader;
-        private final PrintWriter writer;
-        private String username;
-        private String message;
-        private boolean inGame;
+        public Handler(Socket socket){
+            this.socket = socket;
 
-        public PlayerHandler(Socket playerSocket){
-            this.playerSocket = playerSocket;
             try {
-                reader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
-                writer = new PrintWriter(playerSocket.getOutputStream(),true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                quit();
             }
-        }
-
-        private void sendMessage(String message){
-            writer.println(message);
-        }
-
-        private String readMessage() throws IOException {
-            return reader.readLine();
         }
 
         @Override
-        public void run() {
+        public void run(){
+            addPlayerToList(this);
 
-            try {
-                addPlayerToGame(this);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            send("Whats your name?");
+            name = receive();
 
-            while(!isGameEnded()){
-                try {
-                    message = reader.readLine();
-                    if(isCommand(message)){
-                        executeCommand(message);
-                        continue;
-                    }
-                    sendMessage("Invalid input");
+            broadcast(name + "has joined");
+            send("Waiting for other players");
 
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            while(!gameEnded){
+                if(Thread.interrupted()){
+                    return;
                 }
             }
+            quit();
+        }
+
+        public String receive(){
+            String message = null;
             try {
-                quit();
+                message = in.readLine();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            return message;
         }
 
-        private void executeCommand(String message) {
+        public void send(String message){
+            out.println(message);
         }
 
-        private boolean isCommand(String message) {
-            return message.startsWith("/");
+        public boolean hasLeft(){
+            return hasLeft;
         }
 
-        private void quit() throws IOException {
-            playerSocket.close();
-        }
+        public void quit(){
+            hasLeft = true;
 
-        private void addPlayerToGame(PlayerHandler playerHandler) throws IOException {
-
-
-            if (playerList.contains(playerHandler)){
-                System.out.println("Player already on list");
-                return;
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } finally {
+                System.out.println("Player has left!");
             }
-
-            playerList.add(playerHandler);
-            defineUsername();
-        }
-
-        private void defineUsername() throws IOException {
-            sendMessage("Define username: ");
-            this.username = reader.readLine();
         }
 
     }

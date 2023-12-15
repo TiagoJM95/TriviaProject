@@ -1,9 +1,9 @@
 package ServerClient.Server.Commands;
 
 import ServerClient.Server.Server.Server;
-import Game.Game.Game;
+import Game.Game.Game_old;
 
 @FunctionalInterface
 public interface CommandHandler {
-    void execute(Server server, Game.PlayerHandler playerHandler);
+    void execute(Server server, Game_old.PlayerHandler playerHandler);
 }
