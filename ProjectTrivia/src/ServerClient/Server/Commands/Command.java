@@ -9,7 +9,7 @@ public enum Command {
     FORFEIT("/forfeit", new ForfeitTheGame()),
     QUIT("/quit", new QuitTheGame()),
     NOT_FOUND("Command not found", new CommandNotFound()),
-    CATEGORIES("/questions", new QuestionsCategories());
+    CATEGORIES("/categories", new QuestionsCategories());
 
     private String description;
     private CommandHandler handler;
