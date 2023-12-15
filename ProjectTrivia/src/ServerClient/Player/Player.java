@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class Player {
     private Socket playerSocket;
-    //private boolean myTurn;
+    private boolean myTurn;
 
     public void start(String host, int port) throws IOException {
         playerSocket = new Socket(host, port);
