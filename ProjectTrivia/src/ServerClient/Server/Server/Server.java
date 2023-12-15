@@ -6,10 +6,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import ServerClient.Server.Messages.Messages;
 
 public class Server {
 
@@ -27,7 +29,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
             service = Executors.newFixedThreadPool(MAX_NUMBER_OF_CONNECTIONS);
-            System.out.println("Server started on port " + port);
+            System.out.printf(Messages.SERVER_STARTED, port);
 
             int numOfConnections = 0;
 
@@ -52,11 +54,11 @@ public class Server {
     private void addClient(ClientConnectionHandler clientConnectionHandler){
         clients.add(clientConnectionHandler);
         clientConnectionHandler.send("Welcome " + clientConnectionHandler.getName());
-        clientConnectionHandler.send("Command List");
+        clientConnectionHandler.send(Messages.COMMAND_LIST);
         broadcast(clientConnectionHandler.getName() + " has connected to this server");
     }
 
-    private void broadcast(String message){
+    public void broadcast(String message){
         clients.forEach(handler -> handler.send(message));
     }
 
@@ -68,6 +70,12 @@ public class Server {
 
     private void removeClient(ClientConnectionHandler clientConnectionHandler){
         clients.remove(clientConnectionHandler);
+    }
+
+    public Optional<ClientConnectionHandler> getClientByName(String name){
+        return clients.stream()
+                .filter(client -> client.getName().equals(name))
+                .findFirst();
     }
 
 
