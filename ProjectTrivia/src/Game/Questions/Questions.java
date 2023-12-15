@@ -64,6 +64,14 @@ public class Questions {
     public void questionWithAllAnswers(){
         System.out.println(getQuestion());
         shuffleAnswers();
+    }
+    public void checkIfAnswerIsCorrect(String answer){
+        if(answer.equals(getCorrectAnswer())){
+            System.out.println("You responded" + answer +"and your answer ...." + " is correct");
+        }
+        if(answer.equals(getCorrectAnswer())){
+
+        }
 
 
     }
