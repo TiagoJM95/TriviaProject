@@ -1,4 +1,4 @@
-package ServerClient.Player;
+package ServerClient.Client;
 
 
 import java.io.IOException;
