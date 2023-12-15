@@ -19,6 +19,7 @@ public class Server {
     private ExecutorService service;
     private final List<ClientConnectionHandler> clients;
     private final int MAX_NUMBER_OF_CONNECTIONS = 2;
+    //private Game game;
 
     public Server() {
         clients = new CopyOnWriteArrayList<>();
