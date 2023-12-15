@@ -7,19 +7,20 @@ import java.util.concurrent.Executors;
 import Game.Game.Game;
 
 public class Server {
-    private ServerSocket serverSocket;
-    private ExecutorService service;
     private Game game;
 
     public void start() throws IOException {
-       serverSocket = new ServerSocket(8080);
-       service = Executors.newCachedThreadPool();
+       ServerSocket serverSocket = new ServerSocket(8080);
+       ExecutorService service = Executors.newCachedThreadPool();
+
        System.out.println("Server started at port 8080");
 
-       while(!serverSocket.isClosed()){
+       while(serverSocket.isBound()){
 
-           if(!gameCreated()){
-               createGame();
+           if(game == null){
+               this.game = new Game(this);
+               service.execute(game);
+               System.out.println("New game created");
            }
 
            if(game.isAcceptingPlayers()){
@@ -27,18 +28,8 @@ public class Server {
            }
 
        }
-    }
 
-    private boolean gameHasStarted() {
-        return game.isGameStarted();
-    }
-
-    private void createGame() {
-        this.game = new Game(this);
-        service.execute(game);
-    }
-
-    private boolean gameCreated() {
-        return game != null;
+       serverSocket.close();
+       service.close();
     }
 }
