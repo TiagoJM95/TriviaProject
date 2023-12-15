@@ -50,7 +50,7 @@ public class Player {
         @Override
         public void run() {
 
-            String messageFromServer;
+            String messageFromServer = "A";
 
             try{
                 while(!(messageFromServer = in.readLine()).equals("disconnect")){
