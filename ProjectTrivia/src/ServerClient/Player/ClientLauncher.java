@@ -1,12 +1,14 @@
 package ServerClient.Player;
 
+
 import java.io.IOException;
 
-public class PlayerLauncher {
+public class ClientLauncher {
     public static void main(String[] args) {
-        Player player = new Player();
+        Client client = new Client();
+
         try {
-            player.start("localhost", 8080);
+            client.start("localhost", 8080);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
