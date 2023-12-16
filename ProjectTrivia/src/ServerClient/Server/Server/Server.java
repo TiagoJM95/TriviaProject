@@ -18,27 +18,22 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService service;
     private final List<ClientConnectionHandler> clients;
-    private final int MAX_NUMBER_OF_CONNECTIONS = 2;
-    //private Game game;
+    private int numOfConnections;
 
     public Server() {
-        clients = new CopyOnWriteArrayList<>();
+        this.clients = new CopyOnWriteArrayList<>();
+        this.numOfConnections = 0;
     }
 
     public void start(int port){
 
         try {
             serverSocket = new ServerSocket(port);
-            service = Executors.newFixedThreadPool(MAX_NUMBER_OF_CONNECTIONS);
+            service = Executors.newCachedThreadPool();
             System.out.printf(Messages.SERVER_STARTED, port);
 
-            int numOfConnections = 0;
-
-            while(numOfConnections<MAX_NUMBER_OF_CONNECTIONS){
-
-                acceptConnection(numOfConnections);
-                numOfConnections++;
-
+            while(serverSocket.isBound()){
+                acceptConnection(numOfConnections++);
             }
 
         } catch (IOException e) {
