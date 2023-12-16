@@ -1,15 +1,27 @@
 package ServerClient.Server.Commands;
 
 public enum Command {
+
+    //server commands
     NAME("/name", new NameHandler()),
     LIST("/list", new ListPlayers()),
+    HELP("/help", new HelpPlayers()),
+    DISCONNECT("/disconnect", new DisconnectFromServer()),
+    LIST_GAMES("/listgames", new ListAvailableGames()),
+    JOIN("/join", new JoinAvailableGame()),
+
+    // Game commands
     ROLL("/roll", new RollDice()),
     ANSWER("/Answer", new AnswerTheQuestion()),
-    HELP("/help", new HelpPlayers()),
     FORFEIT("/forfeit", new ForfeitTheGame()),
     QUIT("/quit", new QuitTheGame()),
-    NOT_FOUND("Command not found", new CommandNotFound()),
-    CATEGORIES("/categories", new QuestionsCategories());
+    CATEGORIES("/categories", new QuestionsCategories()),
+    SCORE("/score", new CheckScore()),
+
+    // General command
+    NOT_FOUND("Command not found", new CommandNotFound());
+
+
 
     private String description;
     private CommandHandler handler;
