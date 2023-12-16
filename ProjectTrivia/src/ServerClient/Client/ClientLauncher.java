@@ -10,7 +10,7 @@ public class ClientLauncher {
         try {
             client.start("localhost", 8080);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Connection closed...");
         }
     }
 }

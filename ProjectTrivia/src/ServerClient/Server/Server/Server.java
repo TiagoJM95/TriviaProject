@@ -20,7 +20,7 @@ public class Server {
     private ExecutorService service;
     private final List<ClientConnectionHandler> clients;
     private int numOfConnections;
-    private List<Game> games;
+    private final List<Game> games;
     private static int gameCounter = 0;
 
     public Server() {
@@ -58,8 +58,18 @@ public class Server {
         broadcast(clientConnectionHandler.getName() + Messages.HAS_CONNECTED);
     }
 
+    private void removeClient(ClientConnectionHandler clientConnectionHandler){
+        clients.remove(clientConnectionHandler);
+    }
+
     public void broadcast(String message){
         clients.forEach(handler -> handler.send(message));
+    }
+
+    public Optional<ClientConnectionHandler> getClientByName(String name){
+        return clients.stream()
+                .filter(client -> client.getName().equals(name))
+                .findFirst();
     }
 
     public String listClients(){
@@ -70,17 +80,6 @@ public class Server {
         }
 
         return names;
-    }
-
-
-    private void removeClient(ClientConnectionHandler clientConnectionHandler){
-        clients.remove(clientConnectionHandler);
-    }
-
-    public Optional<ClientConnectionHandler> getClientByName(String name){
-        return clients.stream()
-                .filter(client -> client.getName().equals(name))
-                .findFirst();
     }
 
     public void createGame(ClientConnectionHandler clientConnectionHandler){
@@ -107,14 +106,14 @@ public class Server {
     private void addPlayerToGame(ClientConnectionHandler clientConnectionHandler, int gameId) {
 
         Game game = getGameById(gameId);
-        clientConnectionHandler.gameId = gameId;
 
         if(game!=null){
+            clientConnectionHandler.gameId = gameId;
             game.setNumOfPlayers(game.getNumOfPlayers()+1);
+            clientConnectionHandler.send("You have joined a lobby");
         }
 
     }
-
 
     public void joinGame(ClientConnectionHandler clientConnectionHandler, int gameId){
        Game game = getGameById(gameId);
@@ -126,6 +125,12 @@ public class Server {
        if(!game.isGameFull()){
            addPlayerToGame(clientConnectionHandler, gameId);
        }
+    }
+
+    public void disconnectClient(ClientConnectionHandler clientConnectionHandler){
+        broadcast(clientConnectionHandler.getName() + "has disconnected from the server!");
+        removeClient(clientConnectionHandler);
+        clientConnectionHandler.close();
     }
 
     private boolean isPlayerInGameLobby(ClientConnectionHandler clientConnectionHandler) {
@@ -141,12 +146,6 @@ public class Server {
             }
         }
         return null;
-    }
-
-    public void disconnectClient(ClientConnectionHandler clientConnectionHandler){
-        broadcast(clientConnectionHandler.getName() + "has disconnected from the server!");
-        removeClient(clientConnectionHandler);
-        clientConnectionHandler.close();
     }
 
 

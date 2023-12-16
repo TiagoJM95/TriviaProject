@@ -16,7 +16,7 @@ public class Game {
     }
 
     public boolean isGameFull(){
-        return MAX_PLAYERS > numOfPlayers;
+        return MAX_PLAYERS == numOfPlayers;
     }
 
     public int getNumOfPlayers() {

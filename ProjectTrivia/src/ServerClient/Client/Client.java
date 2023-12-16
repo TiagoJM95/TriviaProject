@@ -40,10 +40,11 @@ public class Client {
                     out.newLine();
                     out.flush();
 
-                    if (line.equals("/quit")) {
+                    if (line.equals("/disconnect")) {
                         socket.close();
                         System.exit(0);
                     }
+
                 } catch (IOException e) {
                     System.out.println("Something went wrong with the server. Connection closing...");
                     try {
