@@ -12,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import ServerClient.Server.Messages.Messages;
+import Game.Game.Game;
 
 public class Server {
 
@@ -19,6 +20,8 @@ public class Server {
     private ExecutorService service;
     private final List<ClientConnectionHandler> clients;
     private int numOfConnections;
+    private List<Game> games;
+    private static int gameCounter = 0;
 
     public Server() {
         this.clients = new CopyOnWriteArrayList<>();
@@ -58,9 +61,9 @@ public class Server {
         clients.forEach(handler -> handler.send(message));
     }
 
-    private void listClients(){
+    private void listClients(ClientConnectionHandler clientConnectionHandler){
        clients.stream()
-               .filter(handler -> !handler.equals(this))
+               .filter(handler -> !handler.equals(clientConnectionHandler))
                .forEach(handler -> handler.send(handler.getName()));
     }
 
@@ -74,6 +77,41 @@ public class Server {
                 .findFirst();
     }
 
+    public void createGame(ClientConnectionHandler clientConnectionHandler){
+        games.add(new Game(gameCounter));
+        addPlayerToGame(clientConnectionHandler, gameCounter);
+        gameCounter++;
+    }
+
+    public void listGames(ClientConnectionHandler clientConnectionHandler){
+        games.forEach(game -> clientConnectionHandler.send("Send existing game lobbies and num of players"));
+    }
+
+    private void addPlayerToGame(ClientConnectionHandler clientConnectionHandler, int gameId) {
+        clientConnectionHandler.gameId = gameId;
+    }
+
+    public void joinGame(ClientConnectionHandler clientConnectionHandler, int gameId){
+        if(true){ //if lobby is not full;
+            addPlayerToGame(clientConnectionHandler, gameId);
+        }
+    }
+
+    private boolean isPlayerInGameLobby(ClientConnectionHandler clientConnectionHandler) {
+        return clientConnectionHandler.gameId != 0;
+    }
+
+    private Game getGameById(ClientConnectionHandler clientConnectionHandler) {
+
+        for (Game game : games){
+
+            if(game.getGameId()==clientConnectionHandler.gameId){
+                return game;
+            }
+        }
+        return null;
+    }
+
 
     public class ClientConnectionHandler implements Runnable {
 
@@ -81,6 +119,7 @@ public class Server {
         private final Socket clientSocket;
         private final BufferedWriter out;
         private String message;
+        private int gameId;
 
         public ClientConnectionHandler(Socket clientSocket, String name) throws IOException {
             this.clientSocket = clientSocket;
@@ -100,12 +139,13 @@ public class Server {
             while(in.hasNext()){
 
                 message = in.nextLine();
+
+                if(isPlayerInGameLobby(this) && isCommand(message)){
+                    getGameById(this).dealWithCommand(message);
+                }
+
                 if(isCommand(message)){
                     dealWithCommand(message);
-                    continue;
-                }
-                if (message.equals("")){
-                    throw new RuntimeException();
                 }
             }
         }
