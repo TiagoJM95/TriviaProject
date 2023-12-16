@@ -1,21 +1,20 @@
 package ServerClient.Server.Commands;
 
-import Game.Game.GameCommands.*;
-
 public enum Command {
 
     NAME("/name", new NameHandler()),
-    LIST("/list", new ListPlayers()),
-    HELP("/help", new HelpPlayers()),
-    DISCONNECT("/disconnect", new DisconnectFromServer()),
-    LIST_GAMES("/listgames", new ListAvailableGames()),
-    JOIN("/join", new JoinAvailableGame()),
-    NOT_FOUND("Command not found", new CommandNotFound());
+    LIST("/listPlayers", new ListPlayersHandler()),
+    HELP("/help", new HelpHandler()),
+    DISCONNECT("/disconnect", new DisconnectHandler()),
+    LIST_GAMES("/listGames", new ListAvailableGamesHandler()),
+    CREATE_GAME("/createGame", new CreateGameHandler()),
+    JOIN_GAME("/joinGame", new JoinGameHandler()),
+    NOT_FOUND("Command not found", new CommandNotFoundHandler());
 
 
 
-    private String description;
-    private CommandHandler handler;
+    private final String description;
+    private final CommandHandler handler;
 
     Command(String description, CommandHandler handler) {
         this.description = description;
@@ -28,15 +27,10 @@ public enum Command {
                 return command;
             }
         }
-        return null;
+        return NOT_FOUND;
     }
 
     public CommandHandler getHandler() {
-        //se nao for command retorna o not found;
         return handler;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

@@ -4,6 +4,8 @@ import ServerClient.Server.Server.Server;
 
 public class Game {
     private final int GAME_ID;
+    private final int MAX_PLAYERS = 3;
+    private int numOfPlayers = 0;
 
     public Game(int gameCounter){
         this.GAME_ID = gameCounter;
@@ -11,6 +13,18 @@ public class Game {
 
     public int getGameId(){
         return GAME_ID;
+    }
+
+    public boolean isGameFull(){
+        return MAX_PLAYERS > numOfPlayers;
+    }
+
+    public int getNumOfPlayers() {
+        return numOfPlayers;
+    }
+
+    public void setNumOfPlayers(int numOfPlayers) {
+        this.numOfPlayers = numOfPlayers;
     }
 
     public void dealWithCommand(String message) {

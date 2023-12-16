@@ -1,7 +1,6 @@
 package ServerClient.Server.Server;
 
 import ServerClient.Server.Commands.Command;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -46,26 +45,31 @@ public class Server {
 
     private void acceptConnection(int num) throws IOException {
         Socket clientSocket = serverSocket.accept();
-        ClientConnectionHandler clientConnectionHandler = new ClientConnectionHandler(clientSocket, "Client" + num);
+        ClientConnectionHandler clientConnectionHandler = new ClientConnectionHandler(clientSocket, Messages.DEFAULT_PLAYER_NAME + num);
         service.submit(clientConnectionHandler);
     }
 
     private void addClient(ClientConnectionHandler clientConnectionHandler){
         clients.add(clientConnectionHandler);
-        clientConnectionHandler.send("Welcome " + clientConnectionHandler.getName());
+        clientConnectionHandler.send(Messages.WELCOME + clientConnectionHandler.getName());
         clientConnectionHandler.send(Messages.COMMAND_LIST_SERVER);
-        broadcast(clientConnectionHandler.getName() + " has connected to this server");
+        broadcast(clientConnectionHandler.getName() + Messages.HAS_CONNECTED);
     }
 
     public void broadcast(String message){
         clients.forEach(handler -> handler.send(message));
     }
 
-    private void listClients(ClientConnectionHandler clientConnectionHandler){
-       clients.stream()
-               .filter(handler -> !handler.equals(clientConnectionHandler))
-               .forEach(handler -> handler.send(handler.getName()));
+    public String listClients(){
+        String names = "";
+
+        for(ClientConnectionHandler client : clients){
+            names = names + "\n" + client.getName();
+        }
+
+        return names;
     }
+
 
     private void removeClient(ClientConnectionHandler clientConnectionHandler){
         clients.remove(clientConnectionHandler);
@@ -81,35 +85,66 @@ public class Server {
         games.add(new Game(gameCounter));
         addPlayerToGame(clientConnectionHandler, gameCounter);
         gameCounter++;
+        broadcast(Messages.GAME_CREATED);
     }
 
-    public void listGames(ClientConnectionHandler clientConnectionHandler){
-        games.forEach(game -> clientConnectionHandler.send("Send existing game lobbies and num of players"));
+    public String listGames(){
+        String gameList = "";
+
+        for(Game game : games){
+            gameList = gameList + "\nGame" + game.getGameId() + " :  " + game.getNumOfPlayers() + " players in lobby!";
+        }
+
+        if(gameList.isEmpty()){
+            gameList = "No Game lobbies created!";
+        }
+
+        return gameList;
     }
 
     private void addPlayerToGame(ClientConnectionHandler clientConnectionHandler, int gameId) {
+
+        Game game = getGameById(gameId);
         clientConnectionHandler.gameId = gameId;
+
+        if(game!=null){
+            game.setNumOfPlayers(game.getNumOfPlayers()+1);
+        }
+
     }
 
+
     public void joinGame(ClientConnectionHandler clientConnectionHandler, int gameId){
-        if(true){ //if lobby is not full;
-            addPlayerToGame(clientConnectionHandler, gameId);
-        }
+       Game game = getGameById(gameId);
+
+       if(game == null){
+           clientConnectionHandler.send("There is no game with such ID!");
+           return;
+       }
+       if(!game.isGameFull()){
+           addPlayerToGame(clientConnectionHandler, gameId);
+       }
     }
 
     private boolean isPlayerInGameLobby(ClientConnectionHandler clientConnectionHandler) {
         return clientConnectionHandler.gameId != 0;
     }
 
-    private Game getGameById(ClientConnectionHandler clientConnectionHandler) {
+    private Game getGameById(int gameId) {
 
         for (Game game : games){
 
-            if(game.getGameId()==clientConnectionHandler.gameId){
+            if(game.getGameId()==gameId){
                 return game;
             }
         }
         return null;
+    }
+
+    public void disconnectClient(ClientConnectionHandler clientConnectionHandler){
+        broadcast(clientConnectionHandler.getName() + "has disconnected from the server!");
+        removeClient(clientConnectionHandler);
+        clientConnectionHandler.close();
     }
 
 
@@ -141,7 +176,7 @@ public class Server {
                 message = in.nextLine();
 
                 if(isPlayerInGameLobby(this) && isCommand(message)){
-                    getGameById(this).dealWithCommand(message);
+                    getGameById(this.gameId).dealWithCommand(message);
                 }
 
                 if(isCommand(message)){

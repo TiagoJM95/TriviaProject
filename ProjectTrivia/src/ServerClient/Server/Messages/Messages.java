@@ -5,12 +5,15 @@ public abstract class Messages {
     public static final String SERVER_STARTED = "Server started on port: %s";
     public static final String NO_SUCH_COMMAND = " ❌ Invalid Command";
     public static final String COMMAND_LIST_SERVER = """
-            list of available Commands:
-            /list -> Gets you a list of the connected Players.
-            /name -> Let's you choose your name for the Game.
-            /listgames -> Gives you a list of all the available games to join.
-            /join -> Allows you to join an available game.
-            /disconnect -> Use this to quit the server.
+            \n\t\tList of available commands:
+            
+            \t\t/name -> Let's you choose your name for the Game
+            \t\t/listPlayers -> Gets you a list of all players online
+            \t\t/createGame -> Create a new Game lobby
+            \t\t/listGames -> Gets you a list of all Game lobbies
+            \t\t/joinGame -> Allows you to join an available Game
+            \t\t/disconnect -> Use this to disconnect from the server
+            \t\t/help -> Use this to review the commands again
             """;
     public static final String COMMAND_LIST_GAME = """
             /roll -> Rolls your dice in the game.
@@ -28,4 +31,8 @@ public abstract class Messages {
     public static final String ROLL_DICE = "The dice rolled: ";
     public static final String SCORES = "The current scores are: ";
     public static final String QUESTIONS_CATEGORIES = "The possible categories for questions are: ";
+    public static final String GAME_CREATED = "A new Game was just created!";
+    public static final String DEFAULT_PLAYER_NAME = "Player";
+    public static final String WELCOME = "WELCOME ";
+    public static final String HAS_CONNECTED = " has connected to this server!";
 }
