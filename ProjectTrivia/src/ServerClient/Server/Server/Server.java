@@ -52,21 +52,27 @@ public class Server {
 
     private void addClient(ClientHandler clientHandler){
         clients.add(clientHandler);
+        clientHandler.send(Messages.GAME_BANNER);
         clientHandler.send(Messages.WELCOME + clientHandler.getName());
         clientHandler.send(Messages.COMMAND_LIST_SERVER);
-        broadcast(clientHandler.getName() + Messages.HAS_CONNECTED);
+        broadcast(clientHandler, clientHandler.getName() + Messages.HAS_CONNECTED);
     }
 
     private void removeClient(ClientHandler clientHandler){
         clients.remove(clientHandler);
     }
 
-    public void broadcast(String message){
-        clients.forEach(handler -> handler.send(message));
+    public void broadcast(ClientHandler clientHandler, String message){
+        clients.stream()
+                .filter(handler -> !handler.equals(clientHandler))
+                .forEach(handler -> handler.send(message));
     }
 
-    public void lobbyBroadcast(String message){
-
+    public void lobbyBroadcast(ClientHandler clientHandler, String message){
+        clients.stream()
+                .filter(handler -> !handler.equals(clientHandler))
+                .filter(handler -> handler.gameId == clientHandler.gameId)
+                .forEach(handler -> handler.send(message));
     }
 
     public Optional<ClientHandler> getClientByName(String name){
@@ -79,7 +85,7 @@ public class Server {
         String names = "";
 
         for(ClientHandler client : clients){
-            names = names + " " + client.getName();
+            names = names + "\n" + client.getName();
         }
 
         return names;
@@ -88,8 +94,8 @@ public class Server {
     public void createGame(ClientHandler clientHandler){
         games.add(new Game(++gameCounter));
         addPlayerToGame(clientHandler, gameCounter);
-        broadcast(Messages.GAME_CREATED);
-        //lobbyBroadcast();
+        clientHandler.send(Messages.GAME_CREATED);
+        broadcast(clientHandler, Messages.ALL_GAME_CREATED+gameCounter);
     }
 
     public String listGames(){
@@ -110,8 +116,8 @@ public class Server {
         if(game!=null){
             clientHandler.gameId = gameId;
             game.setNumOfPlayers(game.getNumOfPlayers()+1);
-            clientHandler.send(Messages.PLAYER_JOIN_LOBBY+gameId);
-            //lobbyBroadcast("Player has joined your lobby");
+            clientHandler.send(Messages.JOIN_LOBBY+gameId);
+            lobbyBroadcast(clientHandler, clientHandler.getName()+Messages.PLAYER_JOINED_LOBBY);
         }
     }
 
@@ -130,7 +136,7 @@ public class Server {
     }
 
     public void disconnectClient(ClientHandler clientHandler){
-        broadcast(clientHandler.getName() + Messages.PLAYER_DISCONNECTED);
+        broadcast(clientHandler,clientHandler.getName() + Messages.PLAYER_DISCONNECTED);
         removeClient(clientHandler);
         clientHandler.close();
     }

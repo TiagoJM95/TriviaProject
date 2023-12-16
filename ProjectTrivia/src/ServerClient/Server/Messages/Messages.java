@@ -3,17 +3,18 @@ package ServerClient.Server.Messages;
 public abstract class Messages {
 
     public static final String SERVER_STARTED = "Server started on port: %s";
-    public static final String NO_SUCH_COMMAND = " ❌ Invalid Command";
+    public static final String NO_SUCH_COMMAND = " ❌ Invalid Command ❌";
+    public static final String INVALID_NAME = " ❌ Invalid Name ❌";
     public static final String COMMAND_LIST_SERVER = """
-            \n\t\tList of available commands:
+            \n\tList of available commands:
             
-            \t\t/name -> Let's you choose your name for the Game
-            \t\t/listPlayers -> Gets you a list of all players online
-            \t\t/createGame -> Create a new Game lobby
-            \t\t/listGames -> Gets you a list of all Game lobbies
-            \t\t/joinGame -> Allows you to join an available Game
-            \t\t/disconnect -> Use this to disconnect from the server
-            \t\t/help -> Use this to review the commands again
+            /name -> Let's you choose your name for the Game
+            /listPlayers -> Gets you a list of all players online
+            /createGame -> Create a new Game lobby
+            /listGames -> Gets you a list of all Game lobbies
+            /joinGame -> Allows you to join an available Game
+            /disconnect -> Use this to disconnect from the server
+            /help -> Use this to review the commands again
             """;
     public static final String COMMAND_LIST_GAME = """
             /roll -> Rolls your dice in the game.
@@ -31,9 +32,10 @@ public abstract class Messages {
     public static final String ROLL_DICE = "The dice rolled: ";
     public static final String SCORES = "The current scores are: ";
     public static final String QUESTIONS_CATEGORIES = "The possible categories for questions are: ";
-    public static final String GAME_CREATED = "A new Game was just created!";
+    public static final String ALL_GAME_CREATED = "A new Game was just created! GameId: ";
+    public static final String GAME_CREATED = "You've created a game!";
     public static final String DEFAULT_PLAYER_NAME = "Player";
-    public static final String WELCOME = "WELCOME ";
+    public static final String WELCOME = "\n\t\tWELCOME ";
     public static final String HAS_CONNECTED = " has connected to this server!";
     public static final String ALREADY_IN_LOBBY = "You're in a lobby already";
     public static final String NOT_IN_LOBBY = "You're not in a lobby";
@@ -44,7 +46,23 @@ public abstract class Messages {
     public static final String SERVER_ERROR_1 = "Something went wrong with server! Couldn't start.";
     public static final String NO_GAME_LOBBY = "No Game lobbies created!";
     public static final String GAME_LIST = "\tAvailable Game lobbies: \n";
-    public static final String PLAYER_JOIN_LOBBY = "You've joined the lobby of game";
+    public static final String JOIN_LOBBY = "You've joined the lobby of game";
+    public static final String PLAYER_JOINED_LOBBY = " has joined your lobby";
     public static final String NO_SUCH_GAME = "There is no game with such ID!";
     public static final String FULL_LOBBY = "This lobby is full";
+
+    public static final String GAME_BANNER = "\n\n\n\n\n\n\n████████╗██████╗ ██╗██╗   ██╗██╗ █████╗ ██╗           \n" +
+            "╚══██╔══╝██╔══██╗██║██║   ██║██║██╔══██╗██║           \n" +
+            "   ██║   ██████╔╝██║██║   ██║██║███████║██║           \n" +
+            "   ██║   ██╔══██╗██║╚██╗ ██╔╝██║██╔══██║██║           \n" +
+            "   ██║   ██║  ██║██║ ╚████╔╝ ██║██║  ██║███████╗      \n" +
+            "   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝╚═╝  ╚═╝╚══════╝      \n" +
+            "                                                      \n" +
+            "██████╗ ██╗   ██╗██████╗ ███████╗██╗   ██╗██╗████████╗\n" +
+            "██╔══██╗██║   ██║██╔══██╗██╔════╝██║   ██║██║╚══██╔══╝\n" +
+            "██████╔╝██║   ██║██████╔╝███████╗██║   ██║██║   ██║   \n" +
+            "██╔═══╝ ██║   ██║██╔══██╗╚════██║██║   ██║██║   ██║   \n" +
+            "██║     ╚██████╔╝██║  ██║███████║╚██████╔╝██║   ██║   \n" +
+            "╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝   ╚═╝   \n" +
+            "                                                      ";
 }
