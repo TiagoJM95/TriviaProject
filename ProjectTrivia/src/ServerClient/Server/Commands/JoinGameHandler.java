@@ -7,7 +7,7 @@ public class JoinGameHandler implements CommandHandler {
     @Override
     public void execute(Server server, Server.ClientConnectionHandler clientConnectionHandler) {
         String message = clientConnectionHandler.getMessage();
-        int gameId = Integer.parseInt(message.substring(14));
+        int gameId = Integer.parseInt(message.substring(10));
         server.joinGame(clientConnectionHandler, gameId);
     }
 }

@@ -4,6 +4,7 @@ import ServerClient.Server.Commands.Command;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -25,6 +26,7 @@ public class Server {
     public Server() {
         this.clients = new CopyOnWriteArrayList<>();
         this.numOfConnections = 0;
+        this.games = new ArrayList<>();
     }
 
     public void start(int port){
