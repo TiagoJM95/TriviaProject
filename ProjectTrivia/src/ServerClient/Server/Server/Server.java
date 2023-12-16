@@ -53,7 +53,7 @@ public class Server {
     private void addClient(ClientConnectionHandler clientConnectionHandler){
         clients.add(clientConnectionHandler);
         clientConnectionHandler.send("Welcome " + clientConnectionHandler.getName());
-        clientConnectionHandler.send(Messages.COMMAND_LIST);
+        clientConnectionHandler.send(Messages.COMMAND_LIST_SERVER);
         broadcast(clientConnectionHandler.getName() + " has connected to this server");
     }
 
