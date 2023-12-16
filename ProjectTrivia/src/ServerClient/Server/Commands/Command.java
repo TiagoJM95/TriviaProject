@@ -1,24 +1,15 @@
 package ServerClient.Server.Commands;
 
+import Game.Game.GameCommands.*;
+
 public enum Command {
 
-    //server commands
     NAME("/name", new NameHandler()),
     LIST("/list", new ListPlayers()),
     HELP("/help", new HelpPlayers()),
     DISCONNECT("/disconnect", new DisconnectFromServer()),
     LIST_GAMES("/listgames", new ListAvailableGames()),
     JOIN("/join", new JoinAvailableGame()),
-
-    // Game commands
-    ROLL("/roll", new RollDice()),
-    ANSWER("/Answer", new AnswerTheQuestion()),
-    FORFEIT("/forfeit", new ForfeitTheGame()),
-    QUIT("/quit", new QuitTheGame()),
-    CATEGORIES("/categories", new QuestionsCategories()),
-    SCORE("/score", new CheckScore()),
-
-    // General command
     NOT_FOUND("Command not found", new CommandNotFound());
 
 
