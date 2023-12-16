@@ -5,7 +5,7 @@ import ServerClient.Server.Server.Server;
 
 public class HelpHandler implements CommandHandler {
     @Override
-    public void execute(Server server, Server.ClientConnectionHandler clientConnectionHandler) {
-        clientConnectionHandler.send(Messages.COMMAND_LIST_SERVER);
+    public void execute(Server server, Server.ClientHandler clientHandler) {
+        clientHandler.send(Messages.COMMAND_LIST_SERVER);
     }
 }

@@ -4,7 +4,6 @@ import ServerClient.Server.Commands.Command;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -16,17 +15,17 @@ import Game.Game.Game;
 
 public class Server {
 
-    private ServerSocket serverSocket;
-    private ExecutorService service;
-    private final List<ClientConnectionHandler> clients;
     private int numOfConnections;
     private final List<Game> games;
+    private ExecutorService service;
+    private ServerSocket serverSocket;
     private static int gameCounter = 0;
+    private final List<ClientHandler> clients;
 
     public Server() {
-        this.clients = new CopyOnWriteArrayList<>();
         this.numOfConnections = 0;
-        this.games = new ArrayList<>();
+        this.games = new CopyOnWriteArrayList<>();
+        this.clients = new CopyOnWriteArrayList<>();
     }
 
     public void start(int port){
@@ -41,32 +40,36 @@ public class Server {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(Messages.SERVER_ERROR_1);
         }
     }
 
     private void acceptConnection(int num) throws IOException {
         Socket clientSocket = serverSocket.accept();
-        ClientConnectionHandler clientConnectionHandler = new ClientConnectionHandler(clientSocket, Messages.DEFAULT_PLAYER_NAME + num);
-        service.submit(clientConnectionHandler);
+        ClientHandler clientHandler = new ClientHandler(clientSocket, Messages.DEFAULT_PLAYER_NAME + num);
+        service.submit(clientHandler);
     }
 
-    private void addClient(ClientConnectionHandler clientConnectionHandler){
-        clients.add(clientConnectionHandler);
-        clientConnectionHandler.send(Messages.WELCOME + clientConnectionHandler.getName());
-        clientConnectionHandler.send(Messages.COMMAND_LIST_SERVER);
-        broadcast(clientConnectionHandler.getName() + Messages.HAS_CONNECTED);
+    private void addClient(ClientHandler clientHandler){
+        clients.add(clientHandler);
+        clientHandler.send(Messages.WELCOME + clientHandler.getName());
+        clientHandler.send(Messages.COMMAND_LIST_SERVER);
+        broadcast(clientHandler.getName() + Messages.HAS_CONNECTED);
     }
 
-    private void removeClient(ClientConnectionHandler clientConnectionHandler){
-        clients.remove(clientConnectionHandler);
+    private void removeClient(ClientHandler clientHandler){
+        clients.remove(clientHandler);
     }
 
     public void broadcast(String message){
         clients.forEach(handler -> handler.send(message));
     }
 
-    public Optional<ClientConnectionHandler> getClientByName(String name){
+    public void lobbyBroadcast(String message){
+
+    }
+
+    public Optional<ClientHandler> getClientByName(String name){
         return clients.stream()
                 .filter(client -> client.getName().equals(name))
                 .findFirst();
@@ -75,72 +78,69 @@ public class Server {
     public String listClients(){
         String names = "";
 
-        for(ClientConnectionHandler client : clients){
-            names = names + "\n" + client.getName();
+        for(ClientHandler client : clients){
+            names = names + " " + client.getName();
         }
 
         return names;
     }
 
-    public void createGame(ClientConnectionHandler clientConnectionHandler){
-        games.add(new Game(gameCounter));
-        addPlayerToGame(clientConnectionHandler, gameCounter);
-        gameCounter++;
+    public void createGame(ClientHandler clientHandler){
+        games.add(new Game(++gameCounter));
+        addPlayerToGame(clientHandler, gameCounter);
         broadcast(Messages.GAME_CREATED);
+        //lobbyBroadcast();
     }
 
     public String listGames(){
-        String gameList = "";
+        String gameList = Messages.GAME_LIST;
 
         for(Game game : games){
-            gameList = gameList + "\nGame" + game.getGameId() + " :  " + game.getNumOfPlayers() + " players in lobby!";
+            gameList = gameList + "Game "+game.getGameId()+" ➜ "+game.getNumOfPlayers()+"/"+Game.MAX_PLAYERS;
         }
-
-        if(gameList.isEmpty()){
-            gameList = "No Game lobbies created!";
+        if(gameList.length()==Messages.GAME_LIST.length()){
+            gameList = Messages.NO_GAME_LOBBY;
         }
-
         return gameList;
     }
 
-    private void addPlayerToGame(ClientConnectionHandler clientConnectionHandler, int gameId) {
-
+    private void addPlayerToGame(ClientHandler clientHandler, int gameId) {
         Game game = getGameById(gameId);
 
         if(game!=null){
-            clientConnectionHandler.gameId = gameId;
+            clientHandler.gameId = gameId;
             game.setNumOfPlayers(game.getNumOfPlayers()+1);
-            clientConnectionHandler.send("You have joined a lobby");
+            clientHandler.send(Messages.PLAYER_JOIN_LOBBY+gameId);
+            //lobbyBroadcast("Player has joined your lobby");
         }
-
     }
 
-    public void joinGame(ClientConnectionHandler clientConnectionHandler, int gameId){
+    public void joinGame(ClientHandler clientHandler, int gameId){
        Game game = getGameById(gameId);
 
-       if(game == null){
-           clientConnectionHandler.send("There is no game with such ID!");
+       if(game==null){
+           clientHandler.send(Messages.NO_SUCH_GAME);
            return;
        }
-       if(!game.isGameFull()){
-           addPlayerToGame(clientConnectionHandler, gameId);
+       if(game.isGameFull()){
+           clientHandler.send(Messages.FULL_LOBBY);
+           return;
        }
+        addPlayerToGame(clientHandler, gameId);
     }
 
-    public void disconnectClient(ClientConnectionHandler clientConnectionHandler){
-        broadcast(clientConnectionHandler.getName() + "has disconnected from the server!");
-        removeClient(clientConnectionHandler);
-        clientConnectionHandler.close();
+    public void disconnectClient(ClientHandler clientHandler){
+        broadcast(clientHandler.getName() + Messages.PLAYER_DISCONNECTED);
+        removeClient(clientHandler);
+        clientHandler.close();
     }
 
-    private boolean isPlayerInGameLobby(ClientConnectionHandler clientConnectionHandler) {
-        return clientConnectionHandler.gameId != 0;
+    public boolean isPlayerInGameLobby(ClientHandler clientHandler) {
+        return clientHandler.gameId != 0;
     }
 
-    private Game getGameById(int gameId) {
-
+    public Game getGameById(int gameId) {
         for (Game game : games){
-
             if(game.getGameId()==gameId){
                 return game;
             }
@@ -149,38 +149,40 @@ public class Server {
     }
 
 
-    public class ClientConnectionHandler implements Runnable {
 
-        private String name;
-        private final Socket clientSocket;
-        private final BufferedWriter out;
-        private String message;
+    public class ClientHandler implements Runnable {
+
         private int gameId;
+        private String name;
+        private String message;
+        private final BufferedWriter out;
+        private final Socket clientSocket;
 
-        public ClientConnectionHandler(Socket clientSocket, String name) throws IOException {
-            this.clientSocket = clientSocket;
+        public ClientHandler(Socket clientSocket, String name) throws IOException {
             this.name = name;
+            this.clientSocket = clientSocket;
             this.out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         }
 
         @Override
         public void run() {
+
             addClient(this);
             Scanner in = null;
+
             try {
                 in = new Scanner(clientSocket.getInputStream());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             while(in.hasNext()){
-
                 message = in.nextLine();
 
-                if(isPlayerInGameLobby(this) && isCommand(message)){
-                    getGameById(this.gameId).dealWithCommand(message);
-                }
-
                 if(isCommand(message)){
+                    if(isPlayerInGameLobby(this)){
+                        getGameById(this.gameId).dealWithCommand(message);
+                        continue;
+                    }
                     dealWithCommand(message);
                 }
             }
@@ -225,6 +227,14 @@ public class Server {
 
         public String getMessage() {
             return message;
+        }
+
+        public int getGameId() {
+            return gameId;
+        }
+
+        public void setGameId(int gameId) {
+            this.gameId = gameId;
         }
     }
 }

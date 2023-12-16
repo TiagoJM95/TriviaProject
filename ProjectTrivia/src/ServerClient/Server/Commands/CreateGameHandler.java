@@ -5,7 +5,11 @@ import ServerClient.Server.Server.Server;
 
 public class CreateGameHandler implements CommandHandler{
     @Override
-    public void execute(Server server, Server.ClientConnectionHandler clientConnectionHandler) {
-        server.createGame(clientConnectionHandler);
+    public void execute(Server server, Server.ClientHandler clientHandler) {
+        if(server.isPlayerInGameLobby(clientHandler)){
+            clientHandler.send(Messages.ALREADY_IN_LOBBY);
+            return;
+        }
+        server.createGame(clientHandler);
     }
 }

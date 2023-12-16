@@ -1,13 +1,17 @@
 package ServerClient.Server.Commands;
 
-import Game.Game.Game;
+import ServerClient.Server.Messages.Messages;
 import ServerClient.Server.Server.Server;
 
 public class JoinGameHandler implements CommandHandler {
     @Override
-    public void execute(Server server, Server.ClientConnectionHandler clientConnectionHandler) {
-        String message = clientConnectionHandler.getMessage();
+    public void execute(Server server, Server.ClientHandler clientHandler) {
+        if(server.isPlayerInGameLobby(clientHandler)){
+            clientHandler.send(Messages.ALREADY_IN_LOBBY);
+            return;
+        }
+        String message = clientHandler.getMessage();
         int gameId = Integer.parseInt(message.substring(10));
-        server.joinGame(clientConnectionHandler, gameId);
+        server.joinGame(clientHandler, gameId);
     }
 }

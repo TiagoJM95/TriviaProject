@@ -5,7 +5,7 @@ import ServerClient.Server.Server.Server;
 
 public class CommandNotFoundHandler implements CommandHandler {
     @Override
-    public void execute(Server server, Server.ClientConnectionHandler clientConnectionHandler) {
-        clientConnectionHandler.send(Messages.NO_SUCH_COMMAND);
+    public void execute(Server server, Server.ClientHandler clientHandler) {
+        clientHandler.send(Messages.NO_SUCH_COMMAND);
     }
 }

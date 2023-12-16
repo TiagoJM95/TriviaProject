@@ -1,10 +1,9 @@
 package Game.Game;
 
-import ServerClient.Server.Server.Server;
 
 public class Game {
     private final int GAME_ID;
-    private final int MAX_PLAYERS = 3;
+    public static final int MAX_PLAYERS = 3;
     private int numOfPlayers = 0;
 
     public Game(int gameCounter){
@@ -32,5 +31,9 @@ public class Game {
         //GameCommand command = GameCommand.getCommand(description);
 
         //command.getHandler().execute(Server.this, this);
+    }
+
+    public void startGame(){
+
     }
 }
