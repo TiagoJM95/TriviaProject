@@ -1,6 +1,5 @@
 package Game.Game;
 
-
 public class Game {
     private final int GAME_ID;
     public static final int MAX_PLAYERS = 3;
