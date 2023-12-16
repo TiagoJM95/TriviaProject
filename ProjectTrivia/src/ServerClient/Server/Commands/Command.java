@@ -41,6 +41,7 @@ public enum Command {
     }
 
     public CommandHandler getHandler() {
+        //se nao for command retorna o not found;
         return handler;
     }
 
