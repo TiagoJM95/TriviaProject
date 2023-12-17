@@ -72,8 +72,38 @@ public class Board {
         return buffer.toString();
     }
 
+    public void movePiece(int id, String piece){
+        if(findPositionById(id)==null){
+            return;
+        }
+        checkForPieceAndRemove(piece);
+        findPositionById(id).placePiece(piece);
+    }
+
+    private void checkForPieceAndRemove(String piece){
+        for(Position[] line : boardTemplate){
+            for(Position position : line){
+                if(position.piece.equals(piece)){
+                    position.removePiece();
+                }
+            }
+        }
+    }
+    private Position findPositionById(int id){
+        for(Position[] line : boardTemplate){
+            for(Position position : line){
+                if(position.positionId == id){
+                    return position;
+                }
+            }
+        }
+        return null;
+    }
+
     public static class Position{
         private static int positionCounter = 0;
+        private final int positionId;
+        private String piece = "";
 
         String edge = "*----------------* ";
         String themeLine = "|                | ";
@@ -84,10 +114,16 @@ public class Board {
             if(positionCounter>=10){
                 numberLine = "|"+ positionCounter +"              | ";
             }
+            positionId = positionCounter;
         }
 
-        public void movePieceToPosition(String piece){
-            pieceLine = "|       "+ piece+"        | ";
+        public void placePiece(String piece){
+            this.piece = piece;
+            pieceLine = "|       "+ piece+"       | ";
+        }
+
+        public void removePiece(){
+            pieceLine = "|                | ";
         }
     }
 }
