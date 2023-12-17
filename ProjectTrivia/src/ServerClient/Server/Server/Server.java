@@ -161,11 +161,13 @@ public class Server {
         private int gameId;
         private String name;
         private String message;
+        private boolean myTurn;
         private final BufferedWriter out;
         private final Socket clientSocket;
 
         public ClientHandler(Socket clientSocket, String name) throws IOException {
             this.name = name;
+            this.myTurn = false;
             this.clientSocket = clientSocket;
             this.out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         }
@@ -223,24 +225,32 @@ public class Server {
             }
         }
 
+        public int getGameId() {
+            return gameId;
+        }
+
         public String getName() {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public boolean isMyTurn() {
+            return myTurn;
         }
 
         public String getMessage() {
             return message;
         }
 
-        public int getGameId() {
-            return gameId;
-        }
-
         public void setGameId(int gameId) {
             this.gameId = gameId;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setMyTurn(boolean myTurn) {
+            this.myTurn = myTurn;
         }
     }
 }

@@ -2,7 +2,6 @@ package Game.Game;
 
 import Game.Game.GameCommands.GameCommand;
 import ServerClient.Server.Server.Server;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,6 +37,7 @@ public class Game {
     public boolean isGameFull(){
         return MAX_PLAYERS == PLAYERS.size();
     }
+
     public int getNumOfPlayers(){
         return PLAYERS.size();
     }
