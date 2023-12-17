@@ -9,9 +9,7 @@ public enum Command {
     NAME("/name", new NameHandler()),
     JOIN_GAME("/joinGame", new JoinGameHandler()),
     LIST("/listPlayers", new ListPlayersHandler()),
-    START_GAME("/startGame", new StartGameHandler()),
     DISCONNECT("/disconnect", new DisconnectHandler()),
-    LEAVE_LOBBY("/leaveLobby", new LeaveLobbyHandler()),
     CREATE_GAME("/createGame", new CreateGameHandler()),
     LIST_GAMES("/listGames", new ListAvailableGamesHandler()),
     NOT_FOUND("Command not found", new CommandNotFoundHandler());

@@ -2,16 +2,18 @@ package Game.Game.GameCommands;
 
 
 public enum GameCommand {
-    ROLL("/roll", new RollDice()),
-    ANSWER("/Answer", new AnswerTheQuestion()),
-    FORFEIT("/forfeit", new ForfeitTheGame()),
-    QUIT("/quit", new QuitTheGame()),
-    CATEGORIES("/categories", new QuestionsCategories()),
-    SCORE("/score", new CheckScore()),
+    SCORE("/score", new ScoreHandler()),
+    QUIT("/quit", new QuitGameHandler()),
+    ROLL("/roll", new RollDiceHandler()),
+    ANSWER("/answer", new AnswerHandler()),
+    FORFEIT("/forfeit", new ForfeitHandler()),
+    START_GAME("/startGame", new StartGameHandler()),
+    CATEGORIES("/categories", new CategoriesHandler()),
+    LEAVE_LOBBY("/leaveLobby", new LeaveLobbyHandler()),
     NOT_FOUND("Command not found", new GameCommandNotFound());
 
-    private String description;
-    private GameCommandHandler handler;
+    private final String description;
+    private final GameCommandHandler handler;
 
     GameCommand(String description, GameCommandHandler handler) {
         this.description = description;
@@ -24,15 +26,10 @@ public enum GameCommand {
                 return command;
             }
         }
-        return null;
+        return NOT_FOUND;
     }
 
     public GameCommandHandler getHandler() {
-        //se nao for command retorna o not found;
         return handler;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

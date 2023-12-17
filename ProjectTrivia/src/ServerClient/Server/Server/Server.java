@@ -92,7 +92,7 @@ public class Server {
     }
 
     public void createGame(ClientHandler clientHandler){
-        games.add(new Game(++gameCounter));
+        games.add(new Game(++gameCounter, this));
         addPlayerToGame(clientHandler, gameCounter);
         clientHandler.send(Messages.GAME_CREATED);
         broadcast(clientHandler, Messages.ALL_GAME_CREATED+gameCounter);
@@ -114,8 +114,8 @@ public class Server {
         Game game = getGameById(gameId);
 
         if(game!=null){
+            game.addPlayer(clientHandler);
             clientHandler.gameId = gameId;
-            game.setNumOfPlayers(game.getNumOfPlayers()+1);
             clientHandler.send(Messages.JOIN_LOBBY+gameId);
             lobbyBroadcast(clientHandler, clientHandler.getName()+Messages.PLAYER_JOINED_LOBBY);
         }
@@ -186,7 +186,7 @@ public class Server {
 
                 if(isCommand(message)){
                     if(isPlayerInGameLobby(this)){
-                        getGameById(this.gameId).dealWithCommand(message);
+                        getGameById(this.gameId).dealWithCommand(message, this);
                         continue;
                     }
                     dealWithCommand(message);
