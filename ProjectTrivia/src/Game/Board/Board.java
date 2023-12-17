@@ -1,50 +1,93 @@
 package Game.Board;
 
 public class Board {
-    private static final String xxxxxxxxx = "+-----------+";
-    private static final String x_______x = "|           |";
-    private static final String history = "| HISTORY   |";
-    private static final String geography = "| GEOGRAPHY |";
-    private static final String blank = "             ";
 
+    private final Position[][] boardTemplate;
 
-
-
-    private String[] drawBoard(){
-        return new String[]{
-                xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx,
-                history + geography + history + geography + history,
-                x_______x + x_______x + x_______x + x_______x + x_______x,
-                xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx,
-                xxxxxxxxx + blank + xxxxxxxxx + blank + xxxxxxxxx,
-                history + blank +history + blank + history,
-                x_______x + blank + x_______x + blank + x_______x,
-                xxxxxxxxx + blank + xxxxxxxxx + blank + xxxxxxxxx,
-                xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx,
-                history + geography + history + geography + history,
-                x_______x + x_______x + x_______x + x_______x + x_______x,
-                xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx,
-                xxxxxxxxx + blank + xxxxxxxxx + blank + xxxxxxxxx,
-                history + blank +history + blank + history,
-                x_______x + blank + x_______x + blank + x_______x,
-                xxxxxxxxx + blank + xxxxxxxxx + blank + xxxxxxxxx,
-                xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx,
-                history + geography + history + geography + history,
-                x_______x + x_______x + x_______x + x_______x + x_______x,
-                xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx + xxxxxxxxx};
+    public Board(){
+        boardTemplate = new Position[][]{
+                new Position[]{new Position(),new Position(),new Position(),new Position(),new Position()},
+                new Position[]{new Position(),new Position(),new Position()},
+                new Position[]{new Position(),new Position(),new Position(),new Position(),new Position()},
+                new Position[]{new Position(),new Position(),new Position()},
+                new Position[]{new Position(),new Position(),new Position(),new Position(),new Position()},
+        };
     }
-    public void printBoard(){
-        for (String printEachLine : drawBoard()) {
-            System.out.println(printEachLine);
+
+    public String drawBoard(){
+        return printFullLine(boardTemplate[0]) +
+                printInnerLine(boardTemplate[1]) +
+                printFullLine(boardTemplate[2]) +
+                printInnerLine(boardTemplate[3]) +
+                printFullLine(boardTemplate[4]);
+    }
+
+    public String printInnerLine(Position[] positions) {
+        StringBuilder buffer = new StringBuilder();
+        for (Position position : positions) {
+            buffer.append(position.edge).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.themeLine).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.pieceLine).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.numberLine).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.edge).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        return buffer.toString();
+    }
+
+    public String printFullLine(Position[] positions) {
+        StringBuilder buffer = new StringBuilder();
+        for (Position position : positions) {
+            buffer.append(position.edge);
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.themeLine);
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.pieceLine);
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.numberLine);
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.edge);
+        }
+        buffer.append("\n");
+        return buffer.toString();
+    }
+
+    public static class Position{
+        private static int positionCounter = 0;
+
+        String edge = "*----------------* ";
+        String themeLine = "|                | ";
+        String pieceLine = "|                | ";
+        String numberLine = "|"+ ++positionCounter +"               | ";
+
+        Position(){
+            if(positionCounter>=10){
+                numberLine = "|"+ positionCounter +"              | ";
+            }
+        }
+
+        public void movePieceToPosition(String piece){
+            pieceLine = "|       "+ piece+"        | ";
         }
     }
-
-
-    public static void main(String[] args) {
-        Board board = new Board();
-        board.printBoard();
-    }
-
-
-
 }

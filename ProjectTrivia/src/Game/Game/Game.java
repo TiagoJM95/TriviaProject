@@ -1,5 +1,6 @@
 package Game.Game;
 
+import Game.Board.Board;
 import Game.Game.GameCommands.GameCommand;
 import ServerClient.Server.Server.Server;
 import java.util.LinkedList;
@@ -10,12 +11,14 @@ public class Game {
     public static final int MAX_PLAYERS = 3;
     private final Server SERVER;
     private final List<Server.ClientHandler> PLAYERS;
+    private Board board;
 
 
     public Game(int gameCounter, Server server){
         this.GAME_ID = gameCounter;
         this.SERVER = server;
         this.PLAYERS = new LinkedList<>();
+        this.board = new Board();
     }
 
     public void addPlayer(Server.ClientHandler player){
@@ -50,6 +53,6 @@ public class Game {
     }
 
     public void startGame(){
-        System.out.println("startgame");
+        PLAYERS.forEach(player -> player.send(board.drawBoard()));
     }
 }
