@@ -8,6 +8,6 @@ public class GameCommandNotFound implements GameCommandHandler {
 
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-
+        
     }
 }
