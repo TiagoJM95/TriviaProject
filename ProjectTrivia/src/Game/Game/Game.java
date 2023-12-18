@@ -15,7 +15,7 @@ public class Game {
     public static final int MAX_PLAYERS = 3;
     private final Server SERVER;
     private final List<Server.ClientHandler> PLAYERS;
-    private Board board;
+    private final Board board;
     private QuestionType questionsType;
 
 
@@ -50,6 +50,10 @@ public class Game {
         return PLAYERS.size();
     }
 
+    public void lobbyBroadcast(String message){
+        PLAYERS.forEach(handler -> handler.send(message));
+    }
+
     public void dealWithCommand(String message, Server.ClientHandler player) {
         String description = message.split(" ")[0];
         GameCommand command = GameCommand.getCommand(description);
@@ -58,7 +62,7 @@ public class Game {
     }
 
     public void startGame(){
-        PLAYERS.forEach(player -> player.send(board.drawBoard()));
+        lobbyBroadcast(board.drawBoard());
     }
 
     public String getCategoriesType() {

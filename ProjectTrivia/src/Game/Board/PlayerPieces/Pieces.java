@@ -1,5 +1,7 @@
 package Game.Board.PlayerPieces;
 
+import Game.Board.Board;
+
 import java.util.Arrays;
 
 public class Pieces {
@@ -23,7 +25,6 @@ public class Pieces {
         Pieces pieces = new Pieces();
         System.out.println(pieces.printPieces());
         System.out.println(pieces.chosePiece(4));
-
     }
 
 }

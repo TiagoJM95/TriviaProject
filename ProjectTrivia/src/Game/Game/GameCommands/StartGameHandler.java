@@ -1,7 +1,6 @@
 package Game.Game.GameCommands;
 
 import Game.Game.Game;
-import ServerClient.Server.Commands.CommandHandler;
 import ServerClient.Server.Messages.Messages;
 import ServerClient.Server.Server.Server;
 
@@ -14,6 +13,6 @@ public class StartGameHandler implements GameCommandHandler{
             return;
         }
         game.startGame();
-        game.getServer().lobbyBroadcast(player, "Game started!");
+        game.lobbyBroadcast("Game started!");
     }
 }
