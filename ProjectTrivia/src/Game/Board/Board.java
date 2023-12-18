@@ -1,5 +1,7 @@
 package Game.Board;
 
+import Game.Board.PlayerPieces.Pieces;
+
 public class Board {
 
     private final Position[][] boardTemplate;
@@ -76,6 +78,7 @@ public class Board {
         if(findPositionById(id)==null){
             return;
         }
+
         checkForPieceAndRemove(piece);
         findPositionById(id).placePiece(piece);
     }
@@ -126,5 +129,6 @@ public class Board {
         public void removePiece(){
             pieceLine = "|                | ";
         }
+
     }
 }

@@ -1,6 +1,7 @@
 package Game.Game;
 
 import Game.Board.Board;
+import Game.Board.PlayerPieces.Pieces;
 import Game.Game.GameCommands.GameCommand;
 import Game.Questions.QuestionType;
 import Game.Questions.Questions;
@@ -59,6 +60,8 @@ public class Game {
 
     public void startGame(){
         PLAYERS.forEach(player -> player.send(board.drawBoard()));
+        PLAYERS.forEach(player -> player.send(Pieces.printPieces()));
+
     }
 
     public String getCategoriesType() {
