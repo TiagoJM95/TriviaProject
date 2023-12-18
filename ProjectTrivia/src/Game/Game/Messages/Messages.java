@@ -11,7 +11,6 @@ public class Messages {
             /quit -> Exits the game.
             """;
     public static final String PLAYER_FORFEIT = " has forfeit the game";
-    public static final String PLAYER_QUIT = " has left the lobby";
     public static final String GAME_BEGINS = "The game has started!";
     public static final String CORRECT_ANSWER = "The answer is correct!";
     public static final String WRONG_ANSWER = "The answer is wrong!";

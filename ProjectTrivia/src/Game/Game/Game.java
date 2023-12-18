@@ -2,7 +2,11 @@ package Game.Game;
 
 import Game.Board.Board;
 import Game.Game.GameCommands.GameCommand;
+import Game.Questions.QuestionType;
+import Game.Questions.Questions;
 import ServerClient.Server.Server.Server;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +16,7 @@ public class Game {
     private final Server SERVER;
     private final List<Server.ClientHandler> PLAYERS;
     private Board board;
+    private QuestionType questionsType;
 
 
     public Game(int gameCounter, Server server){
@@ -55,4 +60,9 @@ public class Game {
     public void startGame(){
         PLAYERS.forEach(player -> player.send(board.drawBoard()));
     }
+
+    public String getCategoriesType() {
+        return Arrays.toString(QuestionType.values());
+    }
+
 }

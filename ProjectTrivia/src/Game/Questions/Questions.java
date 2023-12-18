@@ -1,5 +1,6 @@
 package Game.Questions;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Questions {
@@ -13,6 +14,7 @@ public class Questions {
         addHistoryQuestion();
         addAllAnswers();
         questionWithAllAnswers();
+        this.questionType = questionType;
     }
 
 
@@ -76,8 +78,8 @@ public class Questions {
 
     }
 
-
     public static void main(String[] args) {
+
         new Questions(QuestionType.HISTORY);
     }
 

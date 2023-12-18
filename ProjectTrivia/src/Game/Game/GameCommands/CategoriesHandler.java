@@ -2,13 +2,15 @@ package Game.Game.GameCommands;
 
 
 import Game.Game.Game;
+import Game.Game.Messages.Messages;
 import ServerClient.Server.Server.Server;
+
+import java.util.Arrays;
 
 public class CategoriesHandler implements GameCommandHandler {
 
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-        // playerHandler.send(server.ListQuestionSubjects(), Messages.QUESTION_SUBJECTS);
-        // todo method para mostrar o tipo de questoes available
+        player.send(Messages.QUESTIONS_CATEGORIES + game.getCategoriesType());
     }
 }
