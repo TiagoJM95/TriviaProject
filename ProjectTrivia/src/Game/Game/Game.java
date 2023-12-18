@@ -4,7 +4,7 @@ import Game.Board.Board;
 import Game.Dice.Dice;
 import Game.Game.GameCommands.GameCommand;
 import Game.Questions.QuestionType;
-import ServerClient.Server.Server.Server;
+import ServerClient.Server.Server;
 
 import java.util.Arrays;
 import java.util.LinkedList;

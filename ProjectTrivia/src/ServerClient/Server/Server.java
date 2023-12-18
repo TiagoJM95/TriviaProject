@@ -1,4 +1,4 @@
-package ServerClient.Server.Server;
+package ServerClient.Server;
 
 import ServerClient.Server.Commands.Command;
 import java.io.*;

@@ -3,9 +3,7 @@ package Game.Game.GameCommands;
 
 import Game.Game.Game;
 import Game.Game.Messages.Messages;
-import ServerClient.Server.Server.Server;
-
-import java.util.Arrays;
+import ServerClient.Server.Server;
 
 public class CategoriesHandler implements GameCommandHandler {
 

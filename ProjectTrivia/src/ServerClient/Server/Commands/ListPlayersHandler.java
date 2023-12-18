@@ -1,6 +1,6 @@
 package ServerClient.Server.Commands;
 
-import ServerClient.Server.Server.Server;
+import ServerClient.Server.Server;
 
 public class ListPlayersHandler implements CommandHandler {
     @Override

@@ -1,9 +1,8 @@
 package Game.Game.GameCommands;
 
 import Game.Game.Game;
-import ServerClient.Server.Commands.CommandHandler;
 import ServerClient.Server.Messages.Messages;
-import ServerClient.Server.Server.Server;
+import ServerClient.Server.Server;
 
 public class GameCommandNotFound implements GameCommandHandler {
 

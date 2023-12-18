@@ -1,7 +1,7 @@
 package Game.Game.GameCommands;
 
 import Game.Game.Game;
-import ServerClient.Server.Server.Server;
+import ServerClient.Server.Server;
 
 @FunctionalInterface
 public interface GameCommandHandler {

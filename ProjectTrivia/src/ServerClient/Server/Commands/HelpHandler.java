@@ -1,7 +1,7 @@
 package ServerClient.Server.Commands;
 
 import ServerClient.Server.Messages.Messages;
-import ServerClient.Server.Server.Server;
+import ServerClient.Server.Server;
 
 public class HelpHandler implements CommandHandler {
     @Override
