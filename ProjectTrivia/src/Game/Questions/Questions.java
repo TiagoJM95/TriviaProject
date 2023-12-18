@@ -10,9 +10,10 @@ public class Questions {
     private final int random = new Random().nextInt(5);
 
     public Questions(QuestionType questionType){
-        addHistoryQuestion();
-        addAllAnswers();
-        questionWithAllAnswers();
+        this.questionType = questionType;
+        //addHistoryQuestion();
+        //addAllAnswers();
+        //questionWithAllAnswers();
     }
 
 
@@ -65,6 +66,11 @@ public class Questions {
         System.out.println(getQuestion());
         shuffleAnswers();
     }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
     public void checkIfAnswerIsCorrect(String answer){
         if(answer.equals(getCorrectAnswer())){
             System.out.println("You responded" + answer +"and your answer ...." + " is correct");
@@ -78,7 +84,9 @@ public class Questions {
 
 
     public static void main(String[] args) {
-        new Questions(QuestionType.HISTORY);
+
+        Questions questions1 = new Questions(QuestionType.HISTORY);
+        System.out.println(questions1.getQuestionType());
     }
 
 

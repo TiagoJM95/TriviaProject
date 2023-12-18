@@ -119,6 +119,7 @@ public class Board {
 
         public void placePiece(String piece){
             this.piece = piece;
+
             pieceLine = "|       "+ piece+"       | ";
         }
 
