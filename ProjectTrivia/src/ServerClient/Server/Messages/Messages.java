@@ -30,7 +30,7 @@ public abstract class Messages {
     public static final String NAME_CHANGE = " changed name to ";
     public static final String SERVER_ERROR_1 = "Something went wrong with server! Couldn't start.";
     public static final String NO_GAME_LOBBY = "No Game lobbies created!";
-    public static final String GAME_LIST = "\tAvailable Game lobbies: \n";
+    public static final String GAME_LIST = "\n\tAvailable Game lobbies: \n";
     public static final String JOIN_LOBBY = "You've joined the lobby of game";
     public static final String PLAYER_JOINED_LOBBY = " has joined your lobby";
     public static final String NO_SUCH_GAME = "There is no game with such ID!";

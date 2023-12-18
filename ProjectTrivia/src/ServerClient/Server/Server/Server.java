@@ -58,13 +58,14 @@ public class Server {
         broadcast(clientHandler, clientHandler.getName() + Messages.HAS_CONNECTED);
     }
 
-    private void removeClient(ClientHandler clientHandler){
+    public void removeClient(ClientHandler clientHandler){
         clients.remove(clientHandler);
     }
 
     public void broadcast(ClientHandler clientHandler, String message){
         clients.stream()
                 .filter(handler -> !handler.equals(clientHandler))
+                .filter(handler -> handler.gameId==0)
                 .forEach(handler -> handler.send(message));
     }
 
@@ -75,42 +76,7 @@ public class Server {
                 .forEach(handler -> handler.send(message));
     }
 
-    public Optional<ClientHandler> getClientByName(String name){
-        return clients.stream()
-                .filter(client -> client.getName().equals(name))
-                .findFirst();
-    }
-
-    public String listClients(){
-        String names = "";
-
-        for(ClientHandler client : clients){
-            names = names + "\n" + client.getName();
-        }
-
-        return names;
-    }
-
-    public void createGame(ClientHandler clientHandler){
-        games.add(new Game(++gameCounter, this));
-        addPlayerToGame(clientHandler, gameCounter);
-        clientHandler.send(Messages.GAME_CREATED);
-        broadcast(clientHandler, Messages.ALL_GAME_CREATED+gameCounter);
-    }
-
-    public String listGames(){
-        String gameList = Messages.GAME_LIST;
-
-        for(Game game : games){
-            gameList = gameList + "Game "+game.getGameId()+" ➜ "+game.getNumOfPlayers()+"/"+Game.MAX_PLAYERS;
-        }
-        if(gameList.length()==Messages.GAME_LIST.length()){
-            gameList = Messages.NO_GAME_LOBBY;
-        }
-        return gameList;
-    }
-
-    private void addPlayerToGame(ClientHandler clientHandler, int gameId) {
+    public void addPlayerToGame(ClientHandler clientHandler, int gameId) {
         Game game = getGameById(gameId);
 
         if(game!=null){
@@ -121,28 +87,26 @@ public class Server {
         }
     }
 
-    public void joinGame(ClientHandler clientHandler, int gameId){
-       Game game = getGameById(gameId);
-
-       if(game==null){
-           clientHandler.send(Messages.NO_SUCH_GAME);
-           return;
-       }
-       if(game.isGameFull()){
-           clientHandler.send(Messages.FULL_LOBBY);
-           return;
-       }
-        addPlayerToGame(clientHandler, gameId);
-    }
-
-    public void disconnectClient(ClientHandler clientHandler){
-        broadcast(clientHandler,clientHandler.getName() + Messages.PLAYER_DISCONNECTED);
-        removeClient(clientHandler);
-        clientHandler.close();
-    }
-
     public boolean isPlayerInGameLobby(ClientHandler clientHandler) {
         return clientHandler.gameId != 0;
+    }
+
+    public List<ClientHandler> getClients() {
+        return clients;
+    }
+
+    public static int getGameCounter() {
+        return gameCounter;
+    }
+
+    public Optional<ClientHandler> getClientByName(String name){
+        return clients.stream()
+                .filter(client -> client.getName().equals(name))
+                .findFirst();
+    }
+
+    public List<Game> getGames() {
+        return games;
     }
 
     public Game getGameById(int gameId) {
@@ -154,6 +118,9 @@ public class Server {
         return null;
     }
 
+    public static void setGameCounter(int gameCounter) {
+        Server.gameCounter = gameCounter;
+    }
 
 
     public class ClientHandler implements Runnable {
@@ -223,10 +190,6 @@ public class Server {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        public int getGameId() {
-            return gameId;
         }
 
         public String getName() {

@@ -5,6 +5,10 @@ import ServerClient.Server.Server.Server;
 public class ListPlayersHandler implements CommandHandler {
     @Override
     public void execute(Server server, Server.ClientHandler clientHandler) {
-        clientHandler.send(server.listClients());
+        clientHandler.send(server.getClients().stream()
+                .filter(handler -> !handler.equals(clientHandler))
+                .map(Server.ClientHandler::getName)
+                .toList()
+                .toString());
     }
 }
