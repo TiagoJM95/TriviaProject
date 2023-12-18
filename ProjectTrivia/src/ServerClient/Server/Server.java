@@ -129,6 +129,7 @@ public class Server {
         private String name;
         private String message;
         private boolean myTurn;
+        private String piece;
         private final BufferedWriter out;
         private final Socket clientSocket;
 
@@ -214,6 +215,15 @@ public class Server {
 
         public void setMyTurn(boolean myTurn) {
             this.myTurn = myTurn;
+
+        }
+
+        public String getPiece() {
+            return piece;
+        }
+
+        public void setPiece(String piece) {
+            this.piece = piece;
         }
     }
 }
