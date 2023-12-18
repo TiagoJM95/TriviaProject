@@ -2,7 +2,6 @@ package Game.Game.GameCommands;
 
 public enum GameCommand {
     SCORE("/score", new ScoreHandler()),
-    QUIT("/quit", new QuitGameHandler()),
     ROLL("/roll", new RollDiceHandler()),
     ANSWER("/answer", new AnswerHandler()),
     FORFEIT("/forfeit", new ForfeitHandler()),
