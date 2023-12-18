@@ -1,9 +1,7 @@
 package Game.Board.PlayerPieces;
 
 import Game.Board.Board;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Pieces {
@@ -40,6 +38,8 @@ public class Pieces {
 
     public static void main(String[] args) {
         Pieces pieces = new Pieces();
+        System.out.println(pieces.printPieces());
+        System.out.println(pieces.chosePiece(4));
         Board board = new Board();
         //System.out.println(pieces.chosePiece(3));
         System.out.println(Pieces.printPieces());
@@ -60,6 +60,5 @@ public class Pieces {
 
 
     }
-
 }
 
