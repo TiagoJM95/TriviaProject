@@ -52,8 +52,10 @@ public class Game {
         return PLAYERS.size();
     }
 
-    public void lobbyBroadcast(String message){
-        PLAYERS.forEach(handler -> handler.send(message));
+    public void lobbyBroadcast(Server.ClientHandler clientHandler, String message){
+        PLAYERS.stream()
+                .filter(handler -> !handler.equals(clientHandler))
+                .forEach(handler -> handler.send(message));
     }
 
     public void dealWithCommand(String message, Server.ClientHandler player) {
@@ -64,7 +66,7 @@ public class Game {
     }
 
     public void startGame(){
-        lobbyBroadcast(board.drawBoard());
+
     }
 
     public String getCategoriesType() {

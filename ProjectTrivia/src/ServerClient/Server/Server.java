@@ -69,13 +69,6 @@ public class Server {
                 .forEach(handler -> handler.send(message));
     }
 
-    public void lobbyBroadcast(ClientHandler clientHandler, String message){
-        clients.stream()
-                .filter(handler -> !handler.equals(clientHandler))
-                .filter(handler -> handler.gameId == clientHandler.gameId)
-                .forEach(handler -> handler.send(message));
-    }
-
     public void addPlayerToGame(ClientHandler clientHandler, int gameId) {
         Game game = getGameById(gameId);
 
@@ -83,7 +76,7 @@ public class Server {
             game.addPlayer(clientHandler);
             clientHandler.gameId = gameId;
             clientHandler.send(Messages.JOIN_LOBBY+gameId);
-            lobbyBroadcast(clientHandler, clientHandler.getName()+Messages.PLAYER_JOINED_LOBBY);
+            game.lobbyBroadcast(clientHandler, clientHandler.getName()+Messages.PLAYER_JOINED_LOBBY);
         }
     }
 
