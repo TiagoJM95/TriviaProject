@@ -14,7 +14,7 @@ public class Game {
     private final int GAME_ID;
     public static final int MAX_PLAYERS = 3;
     private final Server SERVER;
-    private Dice dice;
+    private final Dice dice;
     private final List<Server.ClientHandler> PLAYERS;
     private final Board board;
     private QuestionType questionsType;
