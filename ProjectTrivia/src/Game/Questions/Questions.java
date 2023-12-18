@@ -1,5 +1,6 @@
 package Game.Questions;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Questions {
@@ -10,10 +11,10 @@ public class Questions {
     private final int random = new Random().nextInt(5);
 
     public Questions(QuestionType questionType){
+        addHistoryQuestion();
+        addAllAnswers();
+        questionWithAllAnswers();
         this.questionType = questionType;
-        //addHistoryQuestion();
-        //addAllAnswers();
-        //questionWithAllAnswers();
     }
 
 
@@ -66,11 +67,6 @@ public class Questions {
         System.out.println(getQuestion());
         shuffleAnswers();
     }
-
-    public QuestionType getQuestionType() {
-        return questionType;
-    }
-
     public void checkIfAnswerIsCorrect(String answer){
         if(answer.equals(getCorrectAnswer())){
             System.out.println("You responded" + answer +"and your answer ...." + " is correct");
@@ -82,11 +78,9 @@ public class Questions {
 
     }
 
-
     public static void main(String[] args) {
 
-        Questions questions1 = new Questions(QuestionType.HISTORY);
-        System.out.println(questions1.getQuestionType());
+        new Questions(QuestionType.HISTORY);
     }
 
 
