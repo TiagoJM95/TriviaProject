@@ -18,4 +18,7 @@ public class Messages {
     public static final String SCORES = "The current scores are: ";
     public static final String QUESTIONS_CATEGORIES = "The possible categories for questions are: ";
     public static final String WIN_MESSAGE = " has Won the game";
+    public static final String GAME_PIECES = "This is your game piece: ";
+    public static final String NO_SUCH_COMMAND = " ❌ Invalid Command ❌";
+    public static final String NOT_YOUR_TURN = "Not your turn!";
 }

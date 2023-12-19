@@ -2,7 +2,7 @@ package Game.Game.GameCommands;
 
 import Game.Board.PlayerPieces.Pieces;
 import Game.Game.Game;
-import ServerClient.Server.Messages.Messages;
+import Game.Game.Messages.Messages;
 import ServerClient.Server.Server;
 
 import java.util.List;
@@ -18,12 +18,11 @@ public class StartGameHandler implements GameCommandHandler{
             return;
         }
         game.setGameStarted(true);
-        for (int i = 0; i < playerList.size(); i++) {
+        for (Server.ClientHandler clientHandler : playerList) {
 
-            playerList.get(i).setPiece(Pieces.generatePiece());
-            game.getBOARD().setPiece(playerList.get(i).getPiece());
-            game.getBOARD().movePiece(1, playerList.get(i).getPiece());
-            playerList.get(i).send("This is your game piece: " + playerList.get(i).getPiece());
+            clientHandler.setPiece(Pieces.generatePiece());
+            game.getBOARD().setPiece(clientHandler.getPiece());
+            clientHandler.send(Messages.GAME_PIECES + clientHandler.getPiece());
 
         }
         game.lobbyBroadcast(game.getBOARD().drawBoard());

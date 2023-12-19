@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Game {
     private final Dice dice;
+    private String currentQuestion;
     private final Board BOARD;
     private final int GAME_ID;
     private final Server SERVER;
@@ -88,23 +89,20 @@ public class Game {
         return PLAYERS;
     }
 
-    public void changeTurns(int playerIndex){
-        for (Server.ClientHandler player : PLAYERS){
-            player.setMyTurn(false);
+    public void changeTurns(Server.ClientHandler player){
+        for (Server.ClientHandler p : PLAYERS){
+            p.setMyTurn(false);
         }
-        PLAYERS.get(playerIndex).setMyTurn(true);
+        //PLAYERS.get(playerIndex).setMyTurn(true);
+        if(PLAYERS.indexOf(player)+1<PLAYERS.size()-1){
+            PLAYERS.get(PLAYERS.indexOf(player)+1).setMyTurn(true);
+            return;
+        }
+        PLAYERS.getFirst().setMyTurn(true);
     }
 
     public void playTurn(){
-        while(!isThereAGameWinner()){
-            for(Server.ClientHandler player : PLAYERS){
-                if (player.isMyTurn()){
 
-                    lobbyBroadcast(player.getName() + "'s turn! Roll your dice!");
-
-                }
-            }
-        }
     }
 
     private boolean isThereAGameWinner() {
@@ -118,5 +116,13 @@ public class Game {
 
     public Dice getDice() {
         return dice;
+    }
+
+    public String getCurrentQuestion() {
+        return currentQuestion;
+    }
+
+    public void setCurrentQuestion(String currentQuestion) {
+        this.currentQuestion = currentQuestion;
     }
 }
