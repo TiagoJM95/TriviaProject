@@ -1,5 +1,7 @@
 package Game.Board;
 
+import Game.Questions.QuestionType;
+
 public class Board {
     private String piece1 = "";
     private String piece2 = "";
@@ -8,11 +10,15 @@ public class Board {
 
     public Board(){
         boardTemplate = new Position[][]{
-                new Position[]{new Position(1),new Position(2),new Position(3),new Position(4),new Position(5)},
-                new Position[]{new Position(16),new Position(6)},
-                new Position[]{new Position(15),new Position(7)},
-                new Position[]{new Position(14),new Position(8)},
-                new Position[]{new Position(13),new Position(12),new Position(11),new Position(10),new Position(9)},
+                new Position[]{new Position(1,QuestionType.HISTORY),new Position(2,QuestionType.ENTERTAINMENT),
+                        new Position(3,QuestionType.GEOGRAPHY),new Position(4,QuestionType.HISTORY),
+                        new Position(5, QuestionType.MUSIC)},
+                new Position[]{new Position(16, QuestionType.GEOGRAPHY),new Position(6,QuestionType.ENTERTAINMENT)},
+                new Position[]{new Position(15,QuestionType.MUSIC),new Position(7,QuestionType.HISTORY)},
+                new Position[]{new Position(14,QuestionType.HISTORY),new Position(8,QuestionType.ENTERTAINMENT)},
+                new Position[]{new Position(13,QuestionType.GEOGRAPHY),new Position(12,QuestionType.MUSIC),
+                        new Position(11,QuestionType.ENTERTAINMENT),new Position(10,QuestionType.GEOGRAPHY),
+                        new Position(9,QuestionType.MUSIC)},
         };
     }
 
@@ -203,6 +209,8 @@ public class Board {
 
     public static class Position{
         private int positionId = 0;
+        private QuestionType questionType;
+
 
         String edge = "*----------------* ";
         String themeLine = "|                | ";
@@ -211,13 +219,35 @@ public class Board {
         String pieceLine3 = "|                | ";
         String numberLine;
 
-        Position(int positionId){
+        Position(int positionId, QuestionType questionType){
             this.positionId = positionId;
             numberLine = "|"+ positionId +"               | ";
             if(positionId>=10){
                 numberLine = "|"+ positionId +"              | ";
-            };
+            }
+            this.questionType = questionType;
+            formatString();
         }
+        private void formatString(){
+            String colorizeString = "| " + questionType.toString() + " ".repeat(15 - questionType.toString().length()) + "| ";
+
+            if (colorizeString.equals("| " + QuestionType.HISTORY.toString() + " ".repeat(15 - QuestionType.HISTORY.toString().length()) + "| ")) {
+                themeLine = colorBoard.BgRed.colorize(colorizeString);
+            }
+            if (colorizeString.equals("| " + QuestionType.GEOGRAPHY.toString() + " ".repeat(15 - QuestionType.GEOGRAPHY.toString().length()) + "| ")) {
+                themeLine = colorBoard.BgYellow.colorize(colorizeString);
+            }
+            if (colorizeString.equals("| " + QuestionType.ENTERTAINMENT.toString() + " ".repeat(15 - QuestionType.ENTERTAINMENT.toString().length()) + "| ")) {
+                themeLine = colorBoard.BgGreen.colorize(colorizeString);
+            }
+            if (colorizeString.equals("| " + QuestionType.MUSIC.toString() + " ".repeat(15 - QuestionType.MUSIC.toString().length()) + "| ")) {
+                themeLine = colorBoard.BgMagenta.colorize(colorizeString);
+            }
+        }
+        private void formatPosition(){
+
+        }
+
 
         public void placePieceLine1(String piece){
             pieceLine1 = "|       "+ piece+"       | ";
