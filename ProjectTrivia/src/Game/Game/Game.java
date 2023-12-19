@@ -1,6 +1,7 @@
 package Game.Game;
 
 import Game.Board.Board;
+import Game.Board.PlayerPieces.Pieces;
 import Game.Dice.Dice;
 import Game.Game.GameCommands.GameCommand;
 import Game.Questions.QuestionType;
@@ -41,6 +42,10 @@ public class Game {
                 .forEach(handler -> handler.send(message));
     }
 
+    public void lobbyBroadcast(String message){
+        PLAYERS.forEach(handler -> handler.send(message));
+    }
+
     public void dealWithCommand(String message, Server.ClientHandler player) {
         String description = message.split(" ")[0];
         GameCommand command = GameCommand.getCommand(description);
@@ -66,6 +71,22 @@ public class Game {
 
     public String getCategoriesType() {
         return Arrays.toString(QuestionType.values());
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
+    public Board getBOARD() {
+        return BOARD;
+    }
+
+    public List<Server.ClientHandler> getPLAYERS() {
+        return PLAYERS;
     }
 
     public void changeTurns(int playerIndex){
