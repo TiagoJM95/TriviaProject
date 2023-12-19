@@ -1,6 +1,10 @@
 package Game.Questions;
 
 public enum QuestionType {
+    ENTERTAINMENT,
+    GAMING,
+    GEOGRAPHY,
     HISTORY,
-    GEOGRAPHY
+    MUSIC,
+    SPORTS;
 }
