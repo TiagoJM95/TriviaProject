@@ -9,17 +9,17 @@ import ServerClient.Server.Server;
 public class AnswerHandler implements GameCommandHandler {
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-        if(player.isMyTurn()){
-            String answer = player.getMessage().substring(8);
-            if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
-                game.lobbyBroadcast("Correct Answer!");
-                player.send("Roll dice again");
-                return;
-            }
-            game.lobbyBroadcast("Missed");
-            game.changeTurns(player);
+        if(!player.isMyTurn()){
+            player.send(Messages.NOT_YOUR_TURN);
             return;
         }
-        player.send(Messages.NOT_YOUR_TURN);
+        String answer = player.getMessage().substring(8);
+        if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
+            game.lobbyBroadcast("Correct Answer!");
+            player.send("Roll dice again");
+            return;
+        }
+        game.lobbyBroadcast("Missed");
+        game.changeTurns(player);
     }
 }
