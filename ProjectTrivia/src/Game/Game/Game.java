@@ -1,7 +1,6 @@
 package Game.Game;
 
 import Game.Board.Board;
-import Game.Board.PlayerPieces.Pieces;
 import Game.Dice.Dice;
 import Game.Game.GameCommands.GameCommand;
 import Game.Questions.QuestionType;
@@ -10,7 +9,7 @@ import ServerClient.Server.Server;
 import java.util.*;
 
 public class Game {
-    private final Dice DICE;
+    private final Dice dice;
     private final Board BOARD;
     private final int GAME_ID;
     private final Server SERVER;
@@ -25,7 +24,7 @@ public class Game {
         this.GAME_ID = gameCounter;
         this.PLAYERS = new ArrayList<>();
         this.BOARD = new Board();
-        this.DICE = new Dice();
+        this.dice = new Dice();
     }
 
     public void addPlayer(Server.ClientHandler player){
@@ -94,5 +93,30 @@ public class Game {
             player.setMyTurn(false);
         }
         PLAYERS.get(playerIndex).setMyTurn(true);
+    }
+
+    public void playTurn(){
+        while(!isThereAGameWinner()){
+            for(Server.ClientHandler player : PLAYERS){
+                if (player.isMyTurn()){
+
+                    lobbyBroadcast(player.getName() + "'s turn! Roll your dice!");
+
+                }
+            }
+        }
+    }
+
+    private boolean isThereAGameWinner() {
+        for (Server.ClientHandler p: PLAYERS){
+            if(p.getScore() == 6){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Dice getDice() {
+        return dice;
     }
 }

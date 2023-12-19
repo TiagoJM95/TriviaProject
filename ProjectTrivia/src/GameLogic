@@ -1,0 +1,9 @@
+                    player.rollDice();
+                    printDiceRoll();
+                    movePieceToPosition();
+                    printQuestion();
+                    receiveAnswer();
+                    evalutateAnswer();
+                    if(answer == true)
+                        continue;
+                    changeTurns();

@@ -27,5 +27,6 @@ public class StartGameHandler implements GameCommandHandler{
 
         }
         game.lobbyBroadcast(game.getBOARD().drawBoard());
+        game.playTurn();
     }
 }

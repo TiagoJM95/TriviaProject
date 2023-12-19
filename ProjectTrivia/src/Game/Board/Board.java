@@ -8,18 +8,18 @@ public class Board {
 
     public Board(){
         boardTemplate = new Position[][]{
-                new Position[]{new Position(),new Position(),new Position(),new Position(),new Position()},
-                new Position[]{new Position(),new Position(),new Position()},
-                new Position[]{new Position(),new Position(),new Position(),new Position(),new Position()},
-                new Position[]{new Position(),new Position(),new Position()},
-                new Position[]{new Position(),new Position(),new Position(),new Position(),new Position()},
+                new Position[]{new Position(1),new Position(2),new Position(3),new Position(4),new Position(5)},
+                new Position[]{new Position(16),new Position(6)},
+                new Position[]{new Position(15),new Position(7)},
+                new Position[]{new Position(14),new Position(8)},
+                new Position[]{new Position(13),new Position(12),new Position(11),new Position(10),new Position(9)},
         };
     }
 
     public String drawBoard(){
         return printFullLine(boardTemplate[0]) +
                 printInnerLine(boardTemplate[1]) +
-                printFullLine(boardTemplate[2]) +
+                printInnerLine(boardTemplate[2]) +
                 printInnerLine(boardTemplate[3]) +
                 printFullLine(boardTemplate[4]);
     }
@@ -27,43 +27,46 @@ public class Board {
     public void setPiece(String piece){
         if(piece1.isEmpty()){
             piece1 = piece;
+            boardTemplate[0][0].placePieceLine1(piece);
             return;
         }
         if(piece2.isEmpty()){
             piece2 = piece;
+            boardTemplate[0][0].placePieceLine2(piece);
             return;
         }
         piece3 = piece;
+        boardTemplate[0][0].placePieceLine3(piece);
     }
 
     public String printInnerLine(Position[] positions) {
         StringBuilder buffer = new StringBuilder();
         for (Position position : positions) {
-            buffer.append(position.edge).append(" ".repeat(19));
+            buffer.append(position.edge).append(" ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.themeLine).append(" ".repeat(19));
+            buffer.append(position.themeLine).append(" ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.pieceLine1).append(" ".repeat(19));
+            buffer.append(position.pieceLine1).append(" ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.pieceLine2).append(" ".repeat(19));
+            buffer.append(position.pieceLine2).append(" ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.pieceLine3).append(" ".repeat(19));
+            buffer.append(position.pieceLine3).append(" ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.numberLine).append(" ".repeat(19));
+            buffer.append(position.numberLine).append(" ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.edge).append(" ".repeat(19));
+            buffer.append(position.edge).append(" ".repeat(57));
         }
         buffer.append("\n");
         return buffer.toString();
@@ -102,7 +105,9 @@ public class Board {
         return buffer.toString();
     }
 
-    public void movePiece(int id, String piece){
+    public void movePiece(int diceRoll, String piece){
+        int id = whereToMove(diceRoll, piece);
+
         if(findPositionById(id)==null){
             return;
         }
@@ -119,6 +124,18 @@ public class Board {
         findPositionById(id).placePieceLine3(piece);
     }
 
+    private int whereToMove(int diceRoll, String piece) {
+        if(findPositionByPiece(piece)==null){
+            return -1;
+        }
+        int p = findPositionByPiece(piece).positionId;
+
+        if(p+diceRoll<17){
+            return p+diceRoll;
+        }
+        return (p+diceRoll)-16;
+    }
+
     private void checkForPieceAndRemove(String piece){
         if(piece.equals(piece1)){
             for(Position[] line : boardTemplate){
@@ -128,17 +145,17 @@ public class Board {
             }
             return;
         }
-        if(piece.equals(piece3)){
+        if(piece.equals(piece2)){
             for(Position[] line : boardTemplate){
                 for(Position position : line){
-                    position.resetLine3();
+                    position.resetLine2();
                 }
             }
             return;
         }
         for(Position[] line : boardTemplate){
             for(Position position : line){
-                position.resetLine2();
+                position.resetLine3();
             }
         }
     }
@@ -153,27 +170,57 @@ public class Board {
         }
         return null;
     }
+    private Position findPositionByPiece(String piece){
+        if(piece.equals(piece1)){
+            for(Position[] line : boardTemplate){
+                for(Position position : line){
+                    if(position.pieceLine1.equals("|       "+ piece+"       | ")){
+                        return position;
+                    }
+                }
+            }
+
+        }
+        if(piece.equals(piece2)){
+            for(Position[] line : boardTemplate){
+                for(Position position : line){
+                    if(position.pieceLine2.equals("|       "+ piece+"       | ")){
+                        return position;
+                    }
+                }
+            }
+
+        }
+        for(Position[] line : boardTemplate){
+            for(Position position : line){
+                if(position.pieceLine3.equals("|       "+ piece+"       | ")){
+                    return position;
+                }
+            }
+        }
+        return null;
+    }
 
     public static class Position{
-        private static int positionCounter = 0;
-        private final int positionId;
+        private int positionId = 0;
 
         String edge = "*----------------* ";
         String themeLine = "|                | ";
         String pieceLine1 = "|                | ";
         String pieceLine2 = "|                | ";
         String pieceLine3 = "|                | ";
-        String numberLine = "|"+ ++positionCounter +"               | ";
+        String numberLine;
 
-        Position(){
-            if(positionCounter>=10){
-                numberLine = "|"+ positionCounter +"              | ";
-            }
-            positionId = positionCounter;
+        Position(int positionId){
+            this.positionId = positionId;
+            numberLine = "|"+ positionId +"               | ";
+            if(positionId>=10){
+                numberLine = "|"+ positionId +"              | ";
+            };
         }
 
         public void placePieceLine1(String piece){
-            pieceLine1  = "|       "+ piece+"       | ";
+            pieceLine1 = "|       "+ piece+"       | ";
         }
         public void placePieceLine2(String piece){
             pieceLine2 = "|       "+ piece+"       | ";
