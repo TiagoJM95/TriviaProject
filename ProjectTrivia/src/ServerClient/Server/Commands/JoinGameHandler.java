@@ -8,13 +8,11 @@ public class JoinGameHandler implements CommandHandler {
     @Override
     public void execute(Server server, Server.ClientHandler clientHandler) {
 
-        String message = clientHandler.getMessage().substring(6);
-
-        if(!message.equals("[0-9]+")){
-            clientHandler.send("Invalid use of the command!");
+        if(!clientHandler.getMessage().substring(6).matches("[0-9]+")){
+            clientHandler.send(Messages.INVALID_USE_OF_COMMAND);
             return;
         }
-        int gameId = Integer.parseInt("message");
+        int gameId = Integer.parseInt(clientHandler.getMessage().substring(6));
 
         Game game = server.getGameById(gameId);
 
@@ -29,7 +27,7 @@ public class JoinGameHandler implements CommandHandler {
 
         server.addPlayerToGame(clientHandler, gameId);
         clientHandler.setMyTurn(false);
-        clientHandler.send(Messages.JOIN_LOBBY+gameId);
         game.lobbyBroadcast(clientHandler, clientHandler.getName()+Messages.PLAYER_JOINED_LOBBY);
+        clientHandler.send(Messages.JOIN_LOBBY+gameId);
     }
 }
