@@ -20,5 +20,6 @@ public class JoinGameHandler implements CommandHandler {
             return;
         }
         server.addPlayerToGame(clientHandler, gameId);
+        clientHandler.setMyTurn(false);
     }
 }

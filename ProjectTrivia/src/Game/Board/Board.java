@@ -1,7 +1,5 @@
 package Game.Board;
 
-import Game.Board.PlayerPieces.Pieces;
-
 public class Board {
 
     private final Position[][] boardTemplate;

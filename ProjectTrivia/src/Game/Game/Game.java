@@ -6,26 +6,25 @@ import Game.Game.GameCommands.GameCommand;
 import Game.Questions.QuestionType;
 import ServerClient.Server.Server;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Game {
+    private final Dice DICE;
+    private final Board BOARD;
     private final int GAME_ID;
-    public static final int MAX_PLAYERS = 3;
     private final Server SERVER;
-    private final Dice dice;
+    private boolean gameStarted;
+    public static final int MAX_PLAYERS = 3;
     private final List<Server.ClientHandler> PLAYERS;
-    private final Board board;
-    private QuestionType questionsType;
 
 
     public Game(int gameCounter, Server server){
-        this.GAME_ID = gameCounter;
         this.SERVER = server;
-        this.PLAYERS = new LinkedList<>();
-        this.board = new Board();
-        this.dice = new Dice();
+        this.gameStarted = false;
+        this.GAME_ID = gameCounter;
+        this.PLAYERS = new ArrayList<>();
+        this.BOARD = new Board();
+        this.DICE = new Dice();
     }
 
     public void addPlayer(Server.ClientHandler player){
@@ -34,22 +33,6 @@ public class Game {
 
     public void removePlayer(Server.ClientHandler player){
         PLAYERS.remove(player);
-    }
-
-    public Server getServer(){
-        return SERVER;
-    }
-
-    public int getGameId(){
-        return GAME_ID;
-    }
-
-    public boolean isGameFull(){
-        return MAX_PLAYERS == PLAYERS.size();
-    }
-
-    public int getNumOfPlayers(){
-        return PLAYERS.size();
     }
 
     public void lobbyBroadcast(Server.ClientHandler clientHandler, String message){
@@ -65,15 +48,30 @@ public class Game {
         command.getHandler().execute(this, player);
     }
 
-    public void startGame(){
+    public int getGameId(){
+        return GAME_ID;
+    }
 
+    public Server getServer(){
+        return SERVER;
+    }
+
+    public int getNumOfPlayers(){
+        return PLAYERS.size();
+    }
+
+    public boolean isGameFull(){
+        return MAX_PLAYERS == PLAYERS.size();
     }
 
     public String getCategoriesType() {
         return Arrays.toString(QuestionType.values());
     }
 
-    public Dice getDice() {
-        return dice;
+    public void changeTurns(int playerIndex){
+        for (Server.ClientHandler player : PLAYERS){
+            player.setMyTurn(false);
+        }
+        PLAYERS.get(playerIndex).setMyTurn(true);
     }
 }

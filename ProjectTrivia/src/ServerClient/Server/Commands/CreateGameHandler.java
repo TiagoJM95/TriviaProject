@@ -10,6 +10,7 @@ public class CreateGameHandler implements CommandHandler{
         Server.setGameCounter(Server.getGameCounter()+1);
         server.getGames().add(new Game(Server.getGameCounter(), server));
         server.addPlayerToGame(clientHandler, Server.getGameCounter());
+        clientHandler.setMyTurn(true);
         clientHandler.send(Messages.GAME_CREATED);
         server.broadcast(clientHandler, Messages.ALL_GAME_CREATED+Server.getGameCounter());
     }
