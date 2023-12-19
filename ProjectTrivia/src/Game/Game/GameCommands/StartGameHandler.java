@@ -14,10 +14,11 @@ public class StartGameHandler implements GameCommandHandler{
         List<Server.ClientHandler> playerList = game.getPLAYERS();
 
         if(game.isGameStarted()){
-            player.send(Messages.NO_SUCH_COMMAND);
+            player.send("Game already started!");
             return;
         }
         game.setGameStarted(true);
+        game.start();
         for (Server.ClientHandler clientHandler : playerList) {
 
             clientHandler.setPiece(Pieces.generatePiece());
@@ -25,7 +26,13 @@ public class StartGameHandler implements GameCommandHandler{
             clientHandler.send(Messages.GAME_PIECES + clientHandler.getPiece());
 
         }
-        game.lobbyBroadcast(game.getBOARD().drawBoard());
-        game.playTurn();
+        try {
+            Thread.sleep(5000);
+            game.lobbyBroadcast(game.getBOARD().drawBoard());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        game.printTurnOwner();
+
     }
 }

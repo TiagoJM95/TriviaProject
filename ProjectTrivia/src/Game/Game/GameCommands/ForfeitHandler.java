@@ -9,7 +9,8 @@ public class ForfeitHandler implements GameCommandHandler {
 
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-        // todo method para desistir do jogo
-        player.send(Messages.PLAYER_FORFEIT);
+        game.removePlayer(player);
+        player.setGameId(0);
+        game.lobbyBroadcast(player.getName() + " has forfeit the game!");
     }
 }
