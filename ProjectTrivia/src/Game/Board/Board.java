@@ -230,21 +230,35 @@ public class Board {
         }
         private void formatString(){
             String colorizeString = "| " + questionType.toString() + " ".repeat(15 - questionType.toString().length()) + "| ";
-
-            if (colorizeString.equals("| " + QuestionType.HISTORY.toString() + " ".repeat(15 - QuestionType.HISTORY.toString().length()) + "| ")) {
-                themeLine = colorBoard.BgRed.colorize(colorizeString);
+            String colorString = colorizeString.substring(0, colorizeString.length() - 1) ;
+            String lastCharacterColorLess = colorizeString.substring(colorizeString.length() - 1);
+            if (colorizeString.equals("| " + QuestionType.HISTORY + " ".repeat(15 - QuestionType.HISTORY.toString().length()) + "| ")) {
+                themeLine = colorBoard.Red.colorize(colorizeString) ;
+                if(positionId == 7){
+                    themeLine = colorBoard.BgRed.colorize(colorString) + lastCharacterColorLess;
+                }
             }
-            if (colorizeString.equals("| " + QuestionType.GEOGRAPHY.toString() + " ".repeat(15 - QuestionType.GEOGRAPHY.toString().length()) + "| ")) {
-                themeLine = colorBoard.BgYellow.colorize(colorizeString);
+            if (colorizeString.equals("| " + QuestionType.GEOGRAPHY + " ".repeat(15 - QuestionType.GEOGRAPHY.toString().length()) + "| ")) {
+                themeLine = colorBoard.Yellow.colorize(colorizeString) ;
+                if(positionId == 3){
+                    themeLine = colorBoard.BgYellow.colorize(colorString) + lastCharacterColorLess;
+                }
             }
-            if (colorizeString.equals("| " + QuestionType.ENTERTAINMENT.toString() + " ".repeat(15 - QuestionType.ENTERTAINMENT.toString().length()) + "| ")) {
-                themeLine = colorBoard.BgGreen.colorize(colorizeString);
+            if (colorizeString.equals("| " + QuestionType.ENTERTAINMENT + " ".repeat(15 - QuestionType.ENTERTAINMENT.toString().length()) + "| ")) {
+                themeLine = colorBoard.Blue.colorize(colorizeString);
+                if(positionId == 11){
+                    themeLine = colorBoard.BgBlue.colorize(colorString) + lastCharacterColorLess;
+                }
             }
-            if (colorizeString.equals("| " + QuestionType.MUSIC.toString() + " ".repeat(15 - QuestionType.MUSIC.toString().length()) + "| ")) {
-                themeLine = colorBoard.BgMagenta.colorize(colorizeString);
+            if (colorizeString.equals("| " + QuestionType.MUSIC + " ".repeat(15 - QuestionType.MUSIC.toString().length()) + "| ")) {
+                themeLine = colorBoard.Magenta.colorize(colorizeString);
+                if(positionId == 15) {
+                    themeLine = colorBoard.BgRed.colorize(colorString) + lastCharacterColorLess;
+                }
             }
         }
         private void formatPosition(){
+
 
         }
 
