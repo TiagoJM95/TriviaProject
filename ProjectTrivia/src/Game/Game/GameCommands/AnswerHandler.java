@@ -13,13 +13,17 @@ public class AnswerHandler implements GameCommandHandler {
             player.send(Messages.NOT_YOUR_TURN);
             return;
         }
+
         String answer = player.getMessage().substring(8);
+
         if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
             game.lobbyBroadcast("Correct Answer!");
-            player.send("Roll dice again");
+            game.printTurnOwner();
             return;
         }
-        game.lobbyBroadcast("Missed");
+
+        game.lobbyBroadcast("Wrong answer!");
         game.changeTurns(player);
+        game.printTurnOwner();
     }
 }
