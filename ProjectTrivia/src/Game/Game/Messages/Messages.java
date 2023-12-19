@@ -21,4 +21,5 @@ public class Messages {
     public static final String GAME_PIECES = "This is your game piece: ";
     public static final String NO_SUCH_COMMAND = " ❌ Invalid Command ❌";
     public static final String NOT_YOUR_TURN = "Not your turn!";
+    public static final String INVALID_USE_OF_COMMAND = "Invalid use of the command!";
 }

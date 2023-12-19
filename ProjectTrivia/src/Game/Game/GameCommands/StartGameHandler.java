@@ -11,7 +11,13 @@ public class StartGameHandler implements GameCommandHandler{
 
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-        List<Server.ClientHandler> playerList = game.getPLAYERS();
+
+        if(player.getMessage().length() > GameCommand.START.getDescription().length()){
+            player.send(Messages.INVALID_USE_OF_COMMAND);
+            return;
+        }
+
+        List<Server.ClientHandler> playerList = game.getPlayers();
 
         if(game.isGameStarted()){
             player.send("Game already started!");
@@ -22,13 +28,13 @@ public class StartGameHandler implements GameCommandHandler{
         for (Server.ClientHandler clientHandler : playerList) {
 
             clientHandler.setPiece(Pieces.generatePiece());
-            game.getBOARD().setPiece(clientHandler.getPiece());
+            game.getBoard().setPiece(clientHandler.getPiece());
             clientHandler.send(Messages.GAME_PIECES + clientHandler.getPiece());
 
         }
         try {
             Thread.sleep(5000);
-            game.lobbyBroadcast(game.getBOARD().drawBoard());
+            game.lobbyBroadcast(game.getBoard().drawBoard());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

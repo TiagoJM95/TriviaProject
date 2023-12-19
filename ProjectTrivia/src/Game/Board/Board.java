@@ -1,25 +1,30 @@
 package Game.Board;
 
 import Game.Questions.QuestionType;
+import static Game.Questions.QuestionType.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     private String piece1 = "";
     private String piece2 = "";
     private String piece3 = "";
     private final Position[][] boardTemplate;
+    private final List<Integer> prizedPositions;
 
     public Board(){
         boardTemplate = new Position[][]{
-                new Position[]{new Position(1,QuestionType.HISTORY),new Position(2,QuestionType.ENTERTAINMENT),
-                        new Position(3,QuestionType.GEOGRAPHY),new Position(4,QuestionType.HISTORY),
-                        new Position(5, QuestionType.MUSIC)},
-                new Position[]{new Position(16, QuestionType.GEOGRAPHY),new Position(6,QuestionType.ENTERTAINMENT)},
-                new Position[]{new Position(15,QuestionType.MUSIC),new Position(7,QuestionType.HISTORY)},
-                new Position[]{new Position(14,QuestionType.HISTORY),new Position(8,QuestionType.ENTERTAINMENT)},
-                new Position[]{new Position(13,QuestionType.GEOGRAPHY),new Position(12,QuestionType.MUSIC),
-                        new Position(11,QuestionType.ENTERTAINMENT),new Position(10,QuestionType.GEOGRAPHY),
-                        new Position(9,QuestionType.MUSIC)},
+                new Position[]{new Position(1,HISTORY),new Position(2,ENTERTAINMENT),
+                        new Position(3,GEOGRAPHY),new Position(4,HISTORY),
+                        new Position(5, MUSIC)},
+                new Position[]{new Position(16, GEOGRAPHY),new Position(6,ENTERTAINMENT)},
+                new Position[]{new Position(15,MUSIC),new Position(7,HISTORY)},
+                new Position[]{new Position(14,HISTORY),new Position(8,ENTERTAINMENT)},
+                new Position[]{new Position(13,GEOGRAPHY),new Position(12,MUSIC),
+                        new Position(11,ENTERTAINMENT),new Position(10,GEOGRAPHY),
+                        new Position(9,MUSIC)},
         };
+        prizedPositions = new ArrayList<>(List.of(new Integer[]{3,7,11,15}));
     }
 
     public String drawBoard(){
@@ -176,6 +181,7 @@ public class Board {
         }
         return null;
     }
+
     private Position findPositionByPiece(String piece){
         if(piece.equals(piece1)){
             for(Position[] line : boardTemplate){
@@ -207,9 +213,13 @@ public class Board {
         return null;
     }
 
+    public List<Integer> getPrizedPositions() {
+        return prizedPositions;
+    }
+
     public static class Position{
         private int positionId = 0;
-        private QuestionType questionType;
+        private final QuestionType questionType;
 
 
         String edge = "*----------------* ";
@@ -229,40 +239,35 @@ public class Board {
             formatString();
         }
         private void formatString(){
-            String colorizeString = "| " + questionType.toString() + " ".repeat(15 - questionType.toString().length()) + "| ";
+            String colorizeString = "| " + toString() + " ".repeat(15 - toString().length()) + "| ";
             String colorString = colorizeString.substring(0, colorizeString.length() - 1) ;
             String lastCharacterColorLess = colorizeString.substring(colorizeString.length() - 1);
-            if (colorizeString.equals("| " + QuestionType.HISTORY + " ".repeat(15 - QuestionType.HISTORY.toString().length()) + "| ")) {
+            if (colorizeString.equals("| " + HISTORY + " ".repeat(15 - HISTORY.toString().length()) + "| ")) {
                 themeLine = colorBoard.Red.colorize(colorizeString) ;
                 if(positionId == 7){
                     themeLine = colorBoard.BgRed.colorize(colorString) + lastCharacterColorLess;
                 }
             }
-            if (colorizeString.equals("| " + QuestionType.GEOGRAPHY + " ".repeat(15 - QuestionType.GEOGRAPHY.toString().length()) + "| ")) {
+            if (colorizeString.equals("| " + GEOGRAPHY + " ".repeat(15 - GEOGRAPHY.toString().length()) + "| ")) {
                 themeLine = colorBoard.Yellow.colorize(colorizeString) ;
                 if(positionId == 3){
                     themeLine = colorBoard.BgYellow.colorize(colorString) + lastCharacterColorLess;
                 }
             }
-            if (colorizeString.equals("| " + QuestionType.ENTERTAINMENT + " ".repeat(15 - QuestionType.ENTERTAINMENT.toString().length()) + "| ")) {
+            if (colorizeString.equals("| " + ENTERTAINMENT + " ".repeat(15 - ENTERTAINMENT.toString().length()) + "| ")) {
                 themeLine = colorBoard.Blue.colorize(colorizeString);
                 if(positionId == 11){
                     themeLine = colorBoard.BgBlue.colorize(colorString) + lastCharacterColorLess;
                 }
             }
-            if (colorizeString.equals("| " + QuestionType.MUSIC + " ".repeat(15 - QuestionType.MUSIC.toString().length()) + "| ")) {
+            if (colorizeString.equals("| " + MUSIC + " ".repeat(15 - MUSIC.toString().length()) + "| ")) {
                 themeLine = colorBoard.Magenta.colorize(colorizeString);
                 if(positionId == 15) {
                     themeLine = colorBoard.BgRed.colorize(colorString) + lastCharacterColorLess;
                 }
             }
         }
-        private void formatPosition(){
-
-
-        }
-
-
+        
         public void placePieceLine1(String piece){
             pieceLine1 = "|       "+ piece+"       | ";
         }
@@ -281,6 +286,10 @@ public class Board {
         }
         public void resetLine3(){
             pieceLine3 = "|                | ";
+        }
+
+        public QuestionType getQuestionType() {
+            return questionType;
         }
     }
 }
