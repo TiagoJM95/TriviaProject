@@ -8,13 +8,13 @@ public abstract class Messages {
     public static final String COMMAND_LIST_SERVER = """
             \n\tList of available commands:
             
-            /name -> Let's you choose your name for the Game
-            /listPlayers -> Gets you a list of all players online
-            /createGame -> Create a new Game lobby
-            /listGames -> Gets you a list of all Game lobbies
-            /joinGame -> Allows you to join an available Game
-            /disconnect -> Use this to disconnect from the server
-            /help -> Use this to review the commands again
+            /name <Name>-> Set your username. Case sensitive.
+            /online -> Shows you a list of all online players.
+            /create -> Create a public game lobby.
+            /list -> Shows you a list of all game lobbies.
+            /join <Id> -> Join a specific game lobby.
+            /disconnect -> Use this to disconnect from the server.
+            /help -> Use this to review the commands again.
             """;
     public static final String PLAYER_DISCONNECTED = " left the server";
     public static final String ALL_GAME_CREATED = "A new Game was just created! GameId: ";
@@ -22,9 +22,6 @@ public abstract class Messages {
     public static final String DEFAULT_PLAYER_NAME = "Player";
     public static final String WELCOME = "\n\t\tWELCOME ";
     public static final String HAS_CONNECTED = " has connected to this server!";
-    public static final String ALREADY_IN_LOBBY = "You're in a lobby already";
-    public static final String NOT_IN_LOBBY = "You're not in a lobby";
-    public static final String LEFT_LOBBY = "You have left the lobby!";
     public static final String CLIENT_EXISTS = "Client already exists";
     public static final String SELF_NAME_CHANGE = "You changed your name to ";
     public static final String NAME_CHANGE = " changed name to ";
@@ -35,6 +32,7 @@ public abstract class Messages {
     public static final String PLAYER_JOINED_LOBBY = " has joined your lobby";
     public static final String NO_SUCH_GAME = "There is no game with such ID!";
     public static final String FULL_LOBBY = "This lobby is full";
+        public static final String INVALID_USE_OF_COMMAND = "Invalid use of the command!";
     public static final String GAME_BANNER = """
          
 

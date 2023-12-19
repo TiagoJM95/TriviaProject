@@ -32,4 +32,8 @@ public enum Command {
     public CommandHandler getHandler() {
         return handler;
     }
+
+    public String getDescription() {
+        return description;
+    }
 }
