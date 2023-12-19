@@ -75,8 +75,6 @@ public class Server {
         if(game!=null){
             game.addPlayer(clientHandler);
             clientHandler.gameId = gameId;
-            clientHandler.send(Messages.JOIN_LOBBY+gameId);
-            game.lobbyBroadcast(clientHandler, clientHandler.getName()+Messages.PLAYER_JOINED_LOBBY);
         }
     }
 

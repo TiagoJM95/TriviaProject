@@ -7,11 +7,12 @@ import ServerClient.Server.Server;
 public class CreateGameHandler implements CommandHandler{
     @Override
     public void execute(Server server, Server.ClientHandler clientHandler) {
+
         Server.setGameCounter(Server.getGameCounter()+1);
         server.getGames().add(new Game(Server.getGameCounter(), server));
         server.addPlayerToGame(clientHandler, Server.getGameCounter());
+
         clientHandler.setMyTurn(true);
-        clientHandler.send(Messages.GAME_CREATED);
         server.broadcast(clientHandler, Messages.ALL_GAME_CREATED+Server.getGameCounter());
     }
 }
