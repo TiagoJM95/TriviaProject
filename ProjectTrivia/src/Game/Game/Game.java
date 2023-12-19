@@ -53,56 +53,35 @@ public class Game {
         command.getHandler().execute(this, player);
     }
 
-    public int getGameId(){
-        return GAME_ID;
-    }
-
-    public Server getServer(){
-        return SERVER;
-    }
-
-    public int getNumOfPlayers(){
-        return PLAYERS.size();
-    }
-
-    public boolean isGameFull(){
-        return MAX_PLAYERS == PLAYERS.size();
-    }
-
-    public String getCategoriesType() {
-        return Arrays.toString(QuestionType.values());
-    }
-
-    public boolean isGameStarted() {
-        return gameStarted;
-    }
-
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
-    }
-
-    public Board getBOARD() {
-        return BOARD;
-    }
-
-    public List<Server.ClientHandler> getPLAYERS() {
-        return PLAYERS;
+    public void start(){
+        for (int i = 0; i < 3; i++) {
+            lobbyBroadcast("\nGame is starting in: " + (3-i));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        lobbyBroadcast("\n\n");
     }
 
     public void changeTurns(Server.ClientHandler player){
         for (Server.ClientHandler p : PLAYERS){
             p.setMyTurn(false);
         }
-        //PLAYERS.get(playerIndex).setMyTurn(true);
-        if(PLAYERS.indexOf(player)+1<PLAYERS.size()-1){
+        if(PLAYERS.indexOf(player)+1<PLAYERS.size()){
             PLAYERS.get(PLAYERS.indexOf(player)+1).setMyTurn(true);
             return;
         }
         PLAYERS.getFirst().setMyTurn(true);
     }
 
-    public void playTurn(){
-
+    public void printTurnOwner() {
+        for(Server.ClientHandler p: PLAYERS){
+            if(p.isMyTurn()){
+                lobbyBroadcast("It's " + p.getName() + "'s turn!");
+            }
+        }
     }
 
     private boolean isThereAGameWinner() {
@@ -118,8 +97,44 @@ public class Game {
         return dice;
     }
 
+    public Board getBOARD() {
+        return BOARD;
+    }
+
+    public int getGameId(){
+        return GAME_ID;
+    }
+
+    public Server getServer(){
+        return SERVER;
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public int getNumOfPlayers(){
+        return PLAYERS.size();
+    }
+
     public String getCurrentQuestion() {
         return currentQuestion;
+    }
+
+    public List<Server.ClientHandler> getPLAYERS() {
+        return PLAYERS;
+    }
+
+    public boolean isGameFull(){
+        return MAX_PLAYERS == PLAYERS.size();
+    }
+
+    public String getCategoriesType() {
+        return Arrays.toString(QuestionType.values());
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
     public void setCurrentQuestion(String currentQuestion) {

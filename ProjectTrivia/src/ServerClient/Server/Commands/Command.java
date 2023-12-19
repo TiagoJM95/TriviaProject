@@ -1,8 +1,5 @@
 package ServerClient.Server.Commands;
 
-import Game.Game.GameCommands.LeaveLobbyHandler;
-import Game.Game.GameCommands.StartGameHandler;
-
 public enum Command {
 
     HELP("/help", new HelpHandler()),
