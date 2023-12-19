@@ -1,7 +1,9 @@
 package Game.Board;
 
 public class Board {
-
+    private String piece1 = "";
+    private String piece2 = "";
+    private String piece3 = "";
     private final Position[][] boardTemplate;
 
     public Board(){
@@ -22,6 +24,18 @@ public class Board {
                 printFullLine(boardTemplate[4]);
     }
 
+    public void setPiece(String piece){
+        if(piece1.isEmpty()){
+            piece1 = piece;
+            return;
+        }
+        if(piece2.isEmpty()){
+            piece2 = piece;
+            return;
+        }
+        piece3 = piece;
+    }
+
     public String printInnerLine(Position[] positions) {
         StringBuilder buffer = new StringBuilder();
         for (Position position : positions) {
@@ -33,7 +47,15 @@ public class Board {
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.pieceLine).append(" ".repeat(19));
+            buffer.append(position.pieceLine1).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.pieceLine2).append(" ".repeat(19));
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.pieceLine3).append(" ".repeat(19));
         }
         buffer.append("\n");
         for (Position position : positions) {
@@ -58,7 +80,15 @@ public class Board {
         }
         buffer.append("\n");
         for (Position position : positions) {
-            buffer.append(position.pieceLine);
+            buffer.append(position.pieceLine1);
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.pieceLine2);
+        }
+        buffer.append("\n");
+        for (Position position : positions) {
+            buffer.append(position.pieceLine3);
         }
         buffer.append("\n");
         for (Position position : positions) {
@@ -78,18 +108,41 @@ public class Board {
         }
 
         checkForPieceAndRemove(piece);
-        findPositionById(id).placePiece(piece);
+        if(piece.equals(piece1)){
+            findPositionById(id).placePieceLine1(piece);
+            return;
+        }
+        if(piece.equals(piece2)){
+            findPositionById(id).placePieceLine2(piece);
+            return;
+        }
+        findPositionById(id).placePieceLine3(piece);
     }
 
     private void checkForPieceAndRemove(String piece){
+        if(piece.equals(piece1)){
+            for(Position[] line : boardTemplate){
+                for(Position position : line){
+                    position.resetLine1();
+                }
+            }
+            return;
+        }
+        if(piece.equals(piece3)){
+            for(Position[] line : boardTemplate){
+                for(Position position : line){
+                    position.resetLine3();
+                }
+            }
+            return;
+        }
         for(Position[] line : boardTemplate){
             for(Position position : line){
-                if(position.piece.equals(piece)){
-                    position.removePiece();
-                }
+                position.resetLine2();
             }
         }
     }
+
     private Position findPositionById(int id){
         for(Position[] line : boardTemplate){
             for(Position position : line){
@@ -104,11 +157,12 @@ public class Board {
     public static class Position{
         private static int positionCounter = 0;
         private final int positionId;
-        private String piece = "";
 
         String edge = "*----------------* ";
         String themeLine = "|                | ";
-        String pieceLine = "|                | ";
+        String pieceLine1 = "|                | ";
+        String pieceLine2 = "|                | ";
+        String pieceLine3 = "|                | ";
         String numberLine = "|"+ ++positionCounter +"               | ";
 
         Position(){
@@ -118,15 +172,24 @@ public class Board {
             positionId = positionCounter;
         }
 
-        public void placePiece(String piece){
-            this.piece = piece;
-
-            pieceLine = "|       "+ piece+"       | ";
+        public void placePieceLine1(String piece){
+            pieceLine1  = "|       "+ piece+"       | ";
+        }
+        public void placePieceLine2(String piece){
+            pieceLine2 = "|       "+ piece+"       | ";
+        }
+        public void placePieceLine3(String piece){
+            pieceLine3 = "|       "+ piece+"       | ";
         }
 
-        public void removePiece(){
-            pieceLine = "|                | ";
+        public void resetLine1(){
+            pieceLine1 = "|                | ";
         }
-
+        public void resetLine2(){
+            pieceLine2 = "|                | ";
+        }
+        public void resetLine3(){
+            pieceLine3 = "|                | ";
+        }
     }
 }
