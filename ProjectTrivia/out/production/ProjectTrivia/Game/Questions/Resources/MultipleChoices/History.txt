@@ -18,8 +18,3 @@ A: Battle of Hastings       B: War of the Roses       C: Execution of Charles I 
 A: Jawaharial Nehru       B: Mahatma Gandhi       C: Subhas Chandra Bose       D: Sardar Patel
 A: Ferdinand Magellan       B: Christopher Columbus       C: Vasco da Gama       D: James Cook
 A: John Adams       B: Thomas Jefferson       C: Benjamin Franklin       D: George Washington
-A: Richard Nixon      B: Andrew Johnson      C: Bill Clinton      D: Donald Trump
-A: 1985      B: 1989      C: 1991      D: 1979
-A: Angela Merkel      B: Margaret Thatcher      C: Theresa May      D: Indira Gandhi
-A: American Revolutionary War      B: War of 1812      C: Civil War      D: World War I
-A: Florence Nightingale      B: Clara Barton      C: Mary Seacole      D: Dorothea Dix

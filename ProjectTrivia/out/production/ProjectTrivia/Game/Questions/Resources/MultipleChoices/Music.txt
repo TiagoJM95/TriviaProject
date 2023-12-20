@@ -18,8 +18,3 @@ A: Brazil       B: Spain       C: India       D: Cuba
 A: Justin Bieber      B: Bruno Mars       C: Ed Sheeran       D: Shawn Mendes
 A: Drum Set       B: Xylophone       C: Tambourine       D: Conga
 A: Buddy Holly       B: Little Richard       C: Chuck Berry       D: Jerry Lee Lewis
-A: Madonna      B: Beyoncé      C: Lady Gaga      D: Britney Spears
-A) AC/DC      B: Led Zeppelin      C: Guns N' Roses      D: Queen
-A: Eric Clapton      B: Brian May       C: Jimmy Page       D: Jimi Hendrix
-A: Ludwig van Beethoven      B: Wolfgang Amadeus Mozart      C: Antonio Vivaldi      D: Johann Sebastian Bach
-A: Jay-Z      B: Kendrick Lamar       C: Kanye West      D: Eminem
