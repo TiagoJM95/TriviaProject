@@ -3,6 +3,7 @@ package Game.Game.GameCommands;
 
 import Game.Game.Game;
 import Game.Game.Messages.Messages;
+import Game.Questions.QuestionType;
 import Game.Questions.Questions;
 import ServerClient.Server.Server;
 
@@ -36,13 +37,14 @@ public class RollDiceHandler implements GameCommandHandler {
 
         game.lobbyBroadcast("\n\n");
 
-        askQuestions(game);
+        askQuestions(game, player);
 
     }
 
-    private static void askQuestions(Game game) {
-        int randomQuestionIndex = new Random().nextInt(Questions.getQuestionList().size());
-        game.setCurrentQuestion(Questions.getQuestionList().get(randomQuestionIndex));
-        game.lobbyBroadcast(game.getCurrentQuestion());
+    private static void askQuestions(Game game, Server.ClientHandler player) {
+        QuestionType questionType = game.getBOARD().findPositionByPiece(player.getPiece()).getQuestionType();
+        game.setCurrentQuestion(game.getQuestions().askQuestion(questionType));
+        game.lobbyBroadcast("\n\n" + game.getCurrentQuestion());
+        game.lobbyBroadcast("\n" + game.getQuestions().getChoices(questionType, game.getCurrentQuestion()));
     }
 }

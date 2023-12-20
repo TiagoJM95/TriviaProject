@@ -4,6 +4,7 @@ package Game.Game.GameCommands;
 import Game.Board.Board;
 import Game.Game.Game;
 import Game.Game.Messages.Messages;
+import Game.Questions.QuestionType;
 import Game.Questions.Questions;
 import ServerClient.Server.Server;
 
@@ -21,8 +22,10 @@ public class AnswerHandler implements GameCommandHandler {
         }
 
         String answer = player.getMessage().substring(8);
+        QuestionType questionType = game.getBOARD().findPositionByPiece(player.getPiece()).getQuestionType();
 
-        if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
+        if(game.getQuestions().checkIfAnswerIsCorrect(questionType,game.getCurrentQuestion(), answer)){
+            game.getQuestions().removeQuestion(questionType, game.getCurrentQuestion());
             checkIfCanGetPoints(game, player);
             game.lobbyBroadcast(Messages.CORRECT_ANSWER);
             game.printTurnOwner();

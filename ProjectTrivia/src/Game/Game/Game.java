@@ -5,6 +5,7 @@ import Game.Dice.Dice;
 import Game.Game.GameCommands.GameCommand;
 import Game.Game.Messages.Messages;
 import Game.Questions.QuestionType;
+import Game.Questions.Questions;
 import ServerClient.Server.Server;
 
 import java.util.*;
@@ -19,6 +20,7 @@ public class Game {
     private String currentQuestion;
     public static final int MAX_PLAYERS = 3;
     private final List<Server.ClientHandler> PLAYERS;
+    private Questions questions;
 
 
     public Game(int gameCounter, Server server){
@@ -28,6 +30,7 @@ public class Game {
         this.PLAYERS = new ArrayList<>();
         this.BOARD = new Board();
         this.dice = new Dice();
+        this.questions = new Questions();
     }
 
 
@@ -146,5 +149,9 @@ public class Game {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    public Questions getQuestions() {
+        return questions;
     }
 }
