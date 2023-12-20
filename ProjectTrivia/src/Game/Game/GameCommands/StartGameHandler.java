@@ -13,7 +13,7 @@ public class StartGameHandler implements GameCommandHandler{
     public void execute(Game game, Server.ClientHandler player) {
 
         if(game.isGameStarted()){
-            player.send("Game already started!");
+            player.send(Messages.GAME_ALREADY_STARTED);
             return;
         }
 

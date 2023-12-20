@@ -16,6 +16,6 @@ public class ForfeitHandler implements GameCommandHandler {
         }
         game.removePlayer(player);
         player.setGameId(0);
-        game.lobbyBroadcast(player.getName() + " has forfeit the game!");
+        game.lobbyBroadcast(player.getName() + Messages.PLAYER_FORFEIT);
     }
 }

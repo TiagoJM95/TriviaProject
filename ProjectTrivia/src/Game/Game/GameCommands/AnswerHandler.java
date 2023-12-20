@@ -24,12 +24,12 @@ public class AnswerHandler implements GameCommandHandler {
 
         if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
             checkIfCanGetPoints(game, player);
-            game.lobbyBroadcast("Correct Answer!");
+            game.lobbyBroadcast(Messages.CORRECT_ANSWER);
             game.printTurnOwner();
             return;
         }
 
-        game.lobbyBroadcast("Wrong answer!");
+        game.lobbyBroadcast(Messages.WRONG_ANSWER);
         game.changeTurns(player);
         game.printTurnOwner();
     }

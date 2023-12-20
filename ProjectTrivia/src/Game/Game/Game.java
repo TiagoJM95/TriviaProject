@@ -3,6 +3,7 @@ package Game.Game;
 import Game.Board.Board;
 import Game.Dice.Dice;
 import Game.Game.GameCommands.GameCommand;
+import Game.Game.Messages.Messages;
 import Game.Questions.QuestionType;
 import ServerClient.Server.Server;
 
@@ -10,15 +11,14 @@ import java.util.*;
 
 public class Game {
     private final Dice dice;
-    private String currentQuestion;
-    private final Board BOARD;
-    private final int GAME_ID;
-    private final Server SERVER;
-    private boolean gameStarted;
     private boolean gameOver;
+    private final int GAME_ID;
+    private final Board BOARD;
+    private boolean gameStarted;
+    private final Server SERVER;
+    private String currentQuestion;
     public static final int MAX_PLAYERS = 3;
     private final List<Server.ClientHandler> PLAYERS;
-
 
 
     public Game(int gameCounter, Server server){
@@ -29,6 +29,7 @@ public class Game {
         this.BOARD = new Board();
         this.dice = new Dice();
     }
+
 
     public void addPlayer(Server.ClientHandler player){
         PLAYERS.add(player);
@@ -57,14 +58,27 @@ public class Game {
 
     public void start(){
         for (int i = 0; i < 3; i++) {
-            lobbyBroadcast("\nGame is starting in: " + (3-i));
+            lobbyBroadcast(Messages.GAME_BEGINS + (3-i));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        lobbyBroadcast("\n\n");
+        lobbyBroadcast("\n\n"+Messages.COMMAND_LIST_GAME);
+    }
+
+    public void endGame(Server.ClientHandler player){
+
+        lobbyBroadcast(player.getName() + Messages.WIN_MESSAGE);
+
+        for (Server.ClientHandler p: PLAYERS){
+            p.setGameId(0);
+            p.setMyTurn(false);
+            p.setPiece("");
+            PLAYERS.remove(p);
+        }
+        getServer().endGame(this);
     }
 
     public void changeTurns(Server.ClientHandler player){
@@ -122,33 +136,12 @@ public class Game {
         return MAX_PLAYERS == PLAYERS.size();
     }
 
-    public String getCategoriesType() {
-        return Arrays.toString(QuestionType.values());
-    }
-
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }
 
     public void setCurrentQuestion(String currentQuestion) {
         this.currentQuestion = currentQuestion;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public void endGame(Server.ClientHandler player){
-
-        lobbyBroadcast("GAME IS OVER THE WINNER IS: " + player.getName());
-
-        for (Server.ClientHandler p: PLAYERS){
-            p.setGameId(0);
-            p.setMyTurn(false);
-            p.setPiece("");
-            PLAYERS.remove(p);
-        }
-        getServer().endGame(this);
     }
 
     public void setGameOver(boolean gameOver) {

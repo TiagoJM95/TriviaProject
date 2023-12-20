@@ -11,6 +11,7 @@ public abstract class Messages {
             /name <Name>-> Set your username. Case sensitive.
             /online -> Shows you a list of all online players.
             /create -> Create a public game lobby.
+            /start -> Start your game.
             /list -> Shows you a list of all game lobbies.
             /join <Id> -> Join a specific game lobby.
             /disconnect -> Use this to disconnect from the server.
