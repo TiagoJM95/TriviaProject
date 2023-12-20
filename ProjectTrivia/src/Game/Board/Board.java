@@ -39,6 +39,27 @@ public class Board {
         this.game = game;
     }
 
+    public void markScoreCategory(QuestionType questionType, int playerIndex){
+        switch (questionType){
+            case MUSIC:
+                scoreMusic.remove(playerIndex);
+                scoreMusic.add(playerIndex, "Music *");
+                break;
+            case HISTORY:
+                scoreHistory.remove(playerIndex);
+                scoreHistory.add(playerIndex, "History *");
+                break;
+            case GEOGRAPHY:
+                scoreGeography.remove(playerIndex);
+                scoreGeography.add(playerIndex, "Geography *");
+                break;
+            case ENTERTAINMENT:
+                scoreEntertainment.remove(playerIndex);
+                scoreEntertainment.add(playerIndex, "Entertainment *");
+                break;
+        }
+    }
+
     public String drawBoard(){
         return printFullLine(boardTemplate[0]) +
                 printScoreLine(boardTemplate[1]) +

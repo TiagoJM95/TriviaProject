@@ -42,9 +42,11 @@ public class AnswerHandler implements GameCommandHandler {
 
         Board.Position currentPosition = game.getBOARD().findPositionByPiece(player.getPiece());
         int positionId = currentPosition.getPositionId();
+        QuestionType questionType = currentPosition.getQuestionType();
 
         if(game.getBOARD().getPrizedPositions().contains(positionId)){
-            player.getScore().updateScore(currentPosition.getQuestionType());
+            player.getScore().updateScore(questionType);
+            game.getBOARD().markScoreCategory(questionType, game.getPLAYERS().indexOf(player));
             checkIfGameCanEnd(game, player);
         }
     }
