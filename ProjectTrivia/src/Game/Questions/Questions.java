@@ -3,6 +3,12 @@ package Game.Questions;
 import java.util.*;
 
 public class Questions {
+
+
+    public static boolean answerIsCorrect;
+    public Questions(){
+        answerIsCorrect = false;
+    }
     private static List<String> questionList = new ArrayList<>(List.of(new String[]{
             "How old was Queen Elizabeth II when she was crowned the Queen of England?" +
                     "A: 33      B: 40      C: 22        D: 27",
@@ -26,7 +32,12 @@ public class Questions {
 
     public static boolean checkIfAnswerIsCorrect(String question, String answer){
         int index = questionList.indexOf(question);
-        return answer.equals(correctAnswers.get(index));
+        boolean isCorrect = answer.equals(correctAnswers.get(index));
+        answerIsCorrect = isCorrect;
+        return isCorrect;
+    }
+    public boolean isAnswerIsCorrect() {
+        return answerIsCorrect;
     }
 
     public static List<String> getQuestionList() {
