@@ -18,8 +18,3 @@ A: Sahara       B: Arabian       C: Antarctic       D: Arctic
 A: Seoul       B: Tokyo       C: Beijing       D: Hanoi
 A: Tigris       B: Nile       C: Euphrates       D: Jordan
 A: Mount Elbert       B: Denali       C: Mount Rainier      D: Mount Whitney
-A: Rocky Mountains      B: Alps      C: Andes      D: Himalayas
-A: Pretoria      B: Cape Town      C: Johannesburg      D: Bloemfontein
-A: Strait of Malacca      B: Strait of Gibraltar       C: Strait of Hormuz      D: Bering Strait
-A: Santiago      B: Buenos Aires      C: Lima      D: Montevideo
-A: Norway      B: Sweden      C: Finland      D: Denmark

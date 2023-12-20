@@ -18,8 +18,3 @@ B
 C
 B
 C
-A
-A
-B
-C
-C

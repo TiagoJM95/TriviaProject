@@ -18,8 +18,3 @@ A: Emma Watson        B: Jennifer Lawerence      C: Scarlett Johansson      D: A
 A: Christopher Nolan      B: Martin Scorsese    C: Todd Philips     D: Quentin Tarantino
 A: Metropolis       B: Gotham City     C: Central City     D: Star City
 A: Dom Cobb      B: Arthur      C: Eames      D: Cobb Nolan
-A: Moana      B: Coco       C: Zootopia       D: Frozen
-A: Leonardo DiCaprio      B: Matthew McConaughey       C: Christian Bale      D: Bradley Cooper
-A: The Hunger Games      B: Twilight      C: Harry Potter      D: The Chronicles of Narnia
-A: Zamunda      B: Wakanda      C: Genovia      D: Elbonia
-A: Heath Ledger      B: Joaquin Phoenix      C: Jack Nicholson      D: Jared Leto

@@ -18,3 +18,8 @@ D
 B
 A
 B
+B
+B
+B
+C
+A
