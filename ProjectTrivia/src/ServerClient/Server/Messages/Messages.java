@@ -32,7 +32,7 @@ public abstract class Messages {
     public static final String PLAYER_JOINED_LOBBY = " has joined your lobby";
     public static final String NO_SUCH_GAME = "There is no game with such ID!";
     public static final String FULL_LOBBY = "This lobby is full";
-    public static final String INVALID_USE_OF_COMMAND = "Invalid use of the command!";
+        public static final String INVALID_USE_OF_COMMAND = "Invalid use of the command!";
     public static final String GAME_BANNER = """
          
 

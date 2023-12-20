@@ -9,14 +9,8 @@ import ServerClient.Server.Server;
 public class AnswerHandler implements GameCommandHandler {
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-
         if(!player.isMyTurn()){
             player.send(Messages.NOT_YOUR_TURN);
-            return;
-        }
-
-        if(!player.getMessage().substring(8).matches("[ABCD]")){
-            player.send(Messages.INVALID_USE_OF_COMMAND);
             return;
         }
 

@@ -3,6 +3,7 @@ package Game.Game.GameCommands;
 
 import Game.Game.Game;
 import Game.Game.Messages.Messages;
+import Game.Questions.QuestionType;
 import Game.Questions.Questions;
 import ServerClient.Server.Server;
 
@@ -11,14 +12,8 @@ import java.util.Random;
 public class RollDiceHandler implements GameCommandHandler {
     @Override
     public void execute(Game game, Server.ClientHandler player) {
-
         if(!player.isMyTurn()){
             player.send(Messages.NOT_YOUR_TURN);
-            return;
-        }
-
-        if(player.getMessage().length() > GameCommand.ROLL.getDescription().length()){
-            player.send(Messages.INVALID_USE_OF_COMMAND);
             return;
         }
 
@@ -31,8 +26,8 @@ public class RollDiceHandler implements GameCommandHandler {
             throw new RuntimeException(e);
         }
 
-        game.getBoard().movePiece(diceRoll, player.getPiece());
-        game.lobbyBroadcast(game.getBoard().drawBoard());
+        game.getBOARD().movePiece(diceRoll, player.getPiece());
+        game.lobbyBroadcast(game.getBOARD().drawBoard());
 
         game.lobbyBroadcast("\n\n");
 

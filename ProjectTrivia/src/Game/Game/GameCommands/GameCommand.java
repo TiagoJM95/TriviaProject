@@ -5,7 +5,7 @@ public enum GameCommand {
     ROLL("/roll", new RollDiceHandler()),
     ANSWER("/answer", new AnswerHandler()),
     FORFEIT("/forfeit", new ForfeitHandler()),
-    START("/start", new StartGameHandler()),
+    START_GAME("/startGame", new StartGameHandler()),
     NOT_FOUND("Command not found", new GameCommandNotFound());
 
     private final String description;
@@ -27,9 +27,5 @@ public enum GameCommand {
 
     public GameCommandHandler getHandler() {
         return handler;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

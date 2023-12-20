@@ -97,7 +97,7 @@ public class Game {
         return dice;
     }
 
-    public Board getBoard() {
+    public Board getBOARD() {
         return BOARD;
     }
 
@@ -121,7 +121,7 @@ public class Game {
         return currentQuestion;
     }
 
-    public List<Server.ClientHandler> getPlayers() {
+    public List<Server.ClientHandler> getPLAYERS() {
         return PLAYERS;
     }
 
