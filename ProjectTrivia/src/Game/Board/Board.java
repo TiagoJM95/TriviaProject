@@ -57,7 +57,7 @@ public class Board {
     public String printInnerLine(Position[] positions) {
         StringBuilder buffer = new StringBuilder();
         for (Position position : positions) {
-            buffer.append(position.edge).append(" ".repeat(57));
+            buffer.append(position.edge).append( " ".repeat(57));
         }
         buffer.append("\n");
         for (Position position : positions) {
@@ -85,6 +85,9 @@ public class Board {
         }
         buffer.append("\n");
         return buffer.toString();
+    }
+    private String scoresBoard(){
+        return null;
     }
 
     public String printFullLine(Position[] positions) {
