@@ -1,5 +1,7 @@
 package ServerClient.Client;
 
+import ServerClient.Server.Messages.Messages;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -49,11 +51,11 @@ public class Client {
                     }
 
                 } catch (IOException e) {
-                    System.out.println("Something went wrong with the server. Connection closing...");
+                    System.out.println(Messages.SERVER_ERROR_2);
                     try {
                         socket.close();
                     } catch (IOException ex) {
-                        System.out.println("Something went wrong with your connection");
+                        System.out.println(Messages.SERVER_ERROR_3);
                     }
                 }
             }

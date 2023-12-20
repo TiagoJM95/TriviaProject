@@ -4,10 +4,10 @@ public enum Command {
 
     HELP("/help", new HelpHandler()),
     NAME("/name", new NameHandler()),
-    JOIN_GAME("/join", new JoinGameHandler()),
     ONLINE("/online", new OnlineHandler()),
-    DISCONNECT("/disconnect", new DisconnectHandler()),
+    JOIN_GAME("/join", new JoinGameHandler()),
     CREATE_GAME("/create", new CreateGameHandler()),
+    DISCONNECT("/disconnect", new DisconnectHandler()),
     LIST_GAMES("/list", new ListAvailableGamesHandler()),
     NOT_FOUND("Command not found", new CommandNotFoundHandler());
 

@@ -19,4 +19,8 @@ public class Messages {
 
     public static final String INVALID_USE_OF_COMMAND = "Invalid use of the command!";
     public static final String GAME_ALREADY_STARTED = "Game already started!";
+    public static final String PLAYER_ANSWER = "%s answered: %s";
+    public static final String GAME_LOBBY_NOT_FULL = "Game lobby not full";
+
+    public static final String PLAYER_TURN = "It's %s's turn!";
 }

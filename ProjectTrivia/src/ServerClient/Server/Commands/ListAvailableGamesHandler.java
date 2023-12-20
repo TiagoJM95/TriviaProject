@@ -14,7 +14,7 @@ public class ListAvailableGamesHandler implements CommandHandler {
         }
 
         String gameList = server.getGames().stream()
-                .map(game -> "Game "+game.getGameId()+" ➜ "+game.getNumOfPlayers()+"/"+ Game.MAX_PLAYERS+" players")
+                .map(game -> "Game "+game.getGameId()+" ➜ "+game.getNumOfPlayers()+"/"+ Game.REQUIRED_PLAYERS +" players")
                 .toList()
                 .toString();
 

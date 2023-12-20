@@ -8,8 +8,10 @@ public class NameHandler implements CommandHandler{
     public void execute(Server server, Server.ClientHandler clientHandler) {
         String message = clientHandler.getMessage();
         String name = message.substring(6);
+
         if(name.matches(("[A-Z]'?[a-zA-Z]+(-[a-zA-Z]+)?$"))){
             String oldName = clientHandler.getName();
+
             server.getClientByName(name).ifPresentOrElse
                     (client -> clientHandler.send(Messages.CLIENT_EXISTS),
                             () -> {

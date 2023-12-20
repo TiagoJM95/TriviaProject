@@ -25,7 +25,7 @@ public class JoinGameHandler implements CommandHandler {
             return;
         }
         if(game.isGameStarted()){
-            clientHandler.send("Game already started");
+            clientHandler.send(Messages.GAME_ALREADY_STARTED);
             return;
         }
 

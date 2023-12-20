@@ -9,19 +9,15 @@ public class Score {
     private boolean entertainmentPoint;
     private boolean allPoints;
 
-    public void updateScore(QuestionType questionType) {
-        switch (questionType){
-            case MUSIC -> setMusicPoint();
-            case HISTORY -> setHistoryPoint();
-            case GEOGRAPHY -> setGeographyPoint();
-            case ENTERTAINMENT -> setEntertainmentPoint();
-        }
-    }
-
     private void setAllPoints(){
         if(historyPoint && geographyPoint && musicPoint && entertainmentPoint){
             allPoints = true;
         }
+    }
+
+    private void setMusicPoint() {
+        this.musicPoint = true;
+        setAllPoints();
     }
 
     private void setHistoryPoint() {
@@ -34,11 +30,6 @@ public class Score {
         setAllPoints();
     }
 
-    private void setMusicPoint() {
-        this.musicPoint = true;
-        setAllPoints();
-    }
-
     private void setEntertainmentPoint() {
         this.entertainmentPoint = true;
         setAllPoints();
@@ -46,5 +37,14 @@ public class Score {
 
     public boolean isAllPoints() {
         return allPoints;
+    }
+
+    public void updateScore(QuestionType questionType) {
+        switch (questionType){
+            case MUSIC -> setMusicPoint();
+            case HISTORY -> setHistoryPoint();
+            case GEOGRAPHY -> setGeographyPoint();
+            case ENTERTAINMENT -> setEntertainmentPoint();
+        }
     }
 }

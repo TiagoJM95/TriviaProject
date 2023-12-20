@@ -4,52 +4,49 @@ import Game.Board.Board;
 import Game.Dice.Dice;
 import Game.Game.GameCommands.GameCommand;
 import Game.Game.Messages.Messages;
-import Game.Questions.QuestionType;
 import Game.Questions.Questions;
 import ServerClient.Server.Server;
-
 import java.util.*;
 
 public class Game {
+    public static final int REQUIRED_PLAYERS = 3;
     private final Dice dice;
-    private boolean gameOver;
-    private final int GAME_ID;
-    private final Board BOARD;
+    private final int gameId;
+    private final Board board;
     private boolean gameStarted;
-    private final Server SERVER;
+    private final Server server;
     private String currentQuestion;
-    public static final int MAX_PLAYERS = 3;
-    private final List<Server.ClientHandler> PLAYERS;
-    private Questions questions;
+    private final Questions questions;
+    private final List<Server.ClientHandler> playerList;
 
 
     public Game(int gameCounter, Server server){
-        this.SERVER = server;
+        this.server = server;
         this.gameStarted = false;
-        this.GAME_ID = gameCounter;
-        this.PLAYERS = new ArrayList<>();
-        this.BOARD = new Board(this);
+        this.gameId = gameCounter;
+        this.playerList = new ArrayList<>();
+        this.board = new Board(this);
         this.dice = new Dice();
         this.questions = new Questions();
     }
 
 
     public void addPlayer(Server.ClientHandler player){
-        PLAYERS.add(player);
+        playerList.add(player);
     }
 
     public void removePlayer(Server.ClientHandler player){
-        PLAYERS.remove(player);
+        playerList.remove(player);
     }
 
     public void lobbyBroadcast(Server.ClientHandler clientHandler, String message){
-        PLAYERS.stream()
+        playerList.stream()
                 .filter(handler -> !handler.equals(clientHandler))
                 .forEach(handler -> handler.send(message));
     }
 
     public void lobbyBroadcast(String message){
-        PLAYERS.forEach(handler -> handler.send(message));
+        playerList.forEach(handler -> handler.send(message));
     }
 
     public void dealWithCommand(String message, Server.ClientHandler player) {
@@ -75,30 +72,30 @@ public class Game {
 
         lobbyBroadcast(player.getName() + Messages.WIN_MESSAGE);
 
-        for (Server.ClientHandler p: PLAYERS){
+        for (Server.ClientHandler p: playerList){
             p.setGameId(0);
             p.setMyTurn(false);
             p.setPiece("");
-            PLAYERS.remove(p);
+            playerList.remove(p);
         }
         getServer().endGame(this);
     }
 
     public void changeTurns(Server.ClientHandler player){
-        for (Server.ClientHandler p : PLAYERS){
+        for (Server.ClientHandler p : playerList){
             p.setMyTurn(false);
         }
-        if(PLAYERS.indexOf(player)+1<PLAYERS.size()){
-            PLAYERS.get(PLAYERS.indexOf(player)+1).setMyTurn(true);
+        if(playerList.indexOf(player)+1< playerList.size()){
+            playerList.get(playerList.indexOf(player)+1).setMyTurn(true);
             return;
         }
-        PLAYERS.getFirst().setMyTurn(true);
+        playerList.getFirst().setMyTurn(true);
     }
 
     public void printTurnOwner() {
-        for(Server.ClientHandler p: PLAYERS){
+        for(Server.ClientHandler p: playerList){
             if(p.isMyTurn()){
-                lobbyBroadcast("It's " + p.getName() + "'s turn!");
+                lobbyBroadcast(String.format(Messages.PLAYER_TURN, p.getName()));
             }
         }
     }
@@ -107,16 +104,20 @@ public class Game {
         return dice;
     }
 
-    public Board getBOARD() {
-        return BOARD;
+    public int getGameId(){
+        return gameId;
     }
 
-    public int getGameId(){
-        return GAME_ID;
+    public Board getBoard() {
+        return board;
     }
 
     public Server getServer(){
-        return SERVER;
+        return server;
+    }
+
+    public Questions getQuestions() {
+        return questions;
     }
 
     public boolean isGameStarted() {
@@ -124,19 +125,19 @@ public class Game {
     }
 
     public int getNumOfPlayers(){
-        return PLAYERS.size();
+        return playerList.size();
     }
 
     public String getCurrentQuestion() {
         return currentQuestion;
     }
 
-    public List<Server.ClientHandler> getPLAYERS() {
-        return PLAYERS;
+    public List<Server.ClientHandler> getPlayers() {
+        return playerList;
     }
 
     public boolean isGameFull(){
-        return MAX_PLAYERS == PLAYERS.size();
+        return REQUIRED_PLAYERS == playerList.size();
     }
 
     public void setGameStarted(boolean gameStarted) {
@@ -145,13 +146,5 @@ public class Game {
 
     public void setCurrentQuestion(String currentQuestion) {
         this.currentQuestion = currentQuestion;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
-    public Questions getQuestions() {
-        return questions;
     }
 }

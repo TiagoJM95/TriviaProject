@@ -1,13 +1,9 @@
 package Game.Game.GameCommands;
 
-
 import Game.Game.Game;
 import Game.Game.Messages.Messages;
 import Game.Questions.QuestionType;
-import Game.Questions.Questions;
 import ServerClient.Server.Server;
-
-import java.util.Random;
 
 public class RollDiceHandler implements GameCommandHandler {
     @Override
@@ -32,19 +28,25 @@ public class RollDiceHandler implements GameCommandHandler {
             throw new RuntimeException(e);
         }
 
-        game.getBOARD().movePiece(diceRoll, player.getPiece());
-        game.lobbyBroadcast(game.getBOARD().drawBoard());
+        game.getBoard().movePiece(diceRoll, player.getPiece());
+        game.lobbyBroadcast(game.getDice().drawDice(diceRoll));
 
-        game.lobbyBroadcast("\n\n");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        game.lobbyBroadcast(game.getBoard().drawBoard());
+        game.lobbyBroadcast("\n");
 
         askQuestions(game, player);
-
     }
 
     private static void askQuestions(Game game, Server.ClientHandler player) {
-        QuestionType questionType = game.getBOARD().findPositionByPiece(player.getPiece()).getQuestionType();
+        QuestionType questionType = game.getBoard().findPositionByPiece(player.getPiece()).getQuestionType();
         game.setCurrentQuestion(game.getQuestions().askQuestion(questionType));
-        game.lobbyBroadcast("\n\n" + game.getCurrentQuestion());
+        game.lobbyBroadcast("\n" + game.getCurrentQuestion());
         game.lobbyBroadcast("\n" + game.getQuestions().getChoices(questionType, game.getCurrentQuestion()));
     }
 }

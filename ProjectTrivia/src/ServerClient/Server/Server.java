@@ -1,5 +1,6 @@
 package ServerClient.Server;
 
+import static ServerClient.Server.Messages.Messages.*;
 import Game.Score.Score;
 import ServerClient.Server.Commands.Command;
 import java.io.*;
@@ -11,7 +12,6 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import ServerClient.Server.Messages.Messages;
 import Game.Game.Game;
 
 public class Server {
@@ -34,29 +34,27 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
             service = Executors.newCachedThreadPool();
-            System.out.printf(Messages.SERVER_STARTED, port);
+            System.out.printf(SERVER_STARTED, port);
 
             while(serverSocket.isBound()){
                 acceptConnection(numOfConnections++);
             }
 
         } catch (IOException e) {
-            System.out.println(Messages.SERVER_ERROR_1);
+            System.out.println(SERVER_ERROR_1);
         }
     }
 
     private void acceptConnection(int num) throws IOException {
         Socket clientSocket = serverSocket.accept();
-        ClientHandler clientHandler = new ClientHandler(clientSocket, Messages.DEFAULT_PLAYER_NAME + num);
+        ClientHandler clientHandler = new ClientHandler(clientSocket, DEFAULT_PLAYER_NAME + num);
         service.submit(clientHandler);
     }
 
     private void addClient(ClientHandler clientHandler){
         clients.add(clientHandler);
-        clientHandler.send(Messages.GAME_BANNER);
-        clientHandler.send(Messages.WELCOME + clientHandler.getName());
-        clientHandler.send(Messages.COMMAND_LIST_SERVER);
-        broadcast(clientHandler, clientHandler.getName() + Messages.HAS_CONNECTED);
+        clientHandler.send(GAME_BANNER + WELCOME + clientHandler.getName() + COMMAND_LIST_SERVER);
+        broadcast(clientHandler, clientHandler.getName() + HAS_CONNECTED);
     }
 
     public void removeClient(ClientHandler clientHandler){
@@ -83,22 +81,8 @@ public class Server {
         return clientHandler.gameId != 0;
     }
 
-    public List<ClientHandler> getClients() {
-        return clients;
-    }
-
-    public static int getGameCounter() {
-        return gameCounter;
-    }
-
-    public Optional<ClientHandler> getClientByName(String name){
-        return clients.stream()
-                .filter(client -> client.getName().equals(name))
-                .findFirst();
-    }
-
-    public List<Game> getGames() {
-        return games;
+    public void endGame(Game game) {
+        games.remove(game);
     }
 
     public Game getGameById(int gameId) {
@@ -110,12 +94,26 @@ public class Server {
         return null;
     }
 
-    public static void setGameCounter(int gameCounter) {
-        Server.gameCounter = gameCounter;
+    public List<Game> getGames() {
+        return games;
     }
 
-    public void endGame(Game game) {
-        games.remove(game);
+    public static int getGameCounter() {
+        return gameCounter;
+    }
+
+    public List<ClientHandler> getClients() {
+        return clients;
+    }
+
+    public Optional<ClientHandler> getClientByName(String name){
+        return clients.stream()
+                .filter(client -> client.getName().equals(name))
+                .findFirst();
+    }
+
+    public static void setGameCounter(int gameCounter) {
+        Server.gameCounter = gameCounter;
     }
 
 
@@ -142,7 +140,7 @@ public class Server {
         public void run() {
 
             addClient(this);
-            Scanner in = null;
+            Scanner in;
 
             try {
                 in = new Scanner(clientSocket.getInputStream());
@@ -195,6 +193,14 @@ public class Server {
             return name;
         }
 
+        public Score getScore() {
+            return score;
+        }
+
+        public String getPiece() {
+            return piece;
+        }
+
         public boolean isMyTurn() {
             return myTurn;
         }
@@ -203,28 +209,20 @@ public class Server {
             return message;
         }
 
-        public void setGameId(int gameId) {
-            this.gameId = gameId;
-        }
-
         public void setName(String name) {
             this.name = name;
-        }
-
-        public void setMyTurn(boolean myTurn) {
-            this.myTurn = myTurn;
-        }
-
-        public String getPiece() {
-            return piece;
         }
 
         public void setPiece(String piece) {
             this.piece = piece;
         }
 
-        public Score getScore() {
-            return score;
+        public void setGameId(int gameId) {
+            this.gameId = gameId;
+        }
+
+        public void setMyTurn(boolean myTurn) {
+            this.myTurn = myTurn;
         }
     }
 }

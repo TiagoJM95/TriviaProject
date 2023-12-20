@@ -1,6 +1,5 @@
 package Game.Questions;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,19 +7,21 @@ import java.util.*;
 
 public class Questions {
 
-    private List<String> musicQuestions;
-    private List<String> musicChoices;
-    private List<String> musicAnswers;
-    private List<String> entertainmentQuestions;
-    private List<String> entertainmentChoices;
-    private List<String> entertainmentAnswers;
-    private List<String> historyQuestions;
-    private List<String> historyChoices;
-    private List<String> historyAnswers;
-    private List<String> geographyQuestions;
-    private List<String> geographyChoices;
-    private List<String> geographyAnswers;
-
+    private final List<String> musicQuestions;
+    private final List<String> musicChoices;
+    private final List<String> musicAnswers;
+    private final List<String> entertainmentQuestions;
+    private final List<String> entertainmentChoices;
+    private final List<String> entertainmentAnswers;
+    private final List<String> historyQuestions;
+    private final List<String> historyChoices;
+    private final List<String> historyAnswers;
+    private final List<String> geographyQuestions;
+    private final List<String> geographyChoices;
+    private final List<String> geographyAnswers;
+    public static final String PATH_QUESTIONS = "src/Game/Questions/Resources/Questions";
+    public static final String PATH_CHOICES = "src/Game/Questions/Resources/MultipleChoices";
+    public static final String PATH_ANSWERS = "src/Game/Questions/Resources/CorrectAnswer";
 
 
     public Questions() {
@@ -43,44 +44,26 @@ public class Questions {
         }
     }
 
-    public static final String PATH_QUESTIONS = "src/Game/Questions/Resources/Questions";
-    public static final String PATH_CHOICES = "src/Game/Questions/Resources/MultipleChoices";
-    public static final String PATH_ANSWERS = "src/Game/Questions/Resources/CorrectAnswer";
-
-
-    public boolean checkIfAnswerIsCorrect(QuestionType questionType ,String question, String answer){
-
-        switch (questionType) {
-
-            case HISTORY -> { return answer.equals(historyAnswers.get(historyQuestions.indexOf(question)));}
-
-            case GEOGRAPHY -> { return answer.equals(geographyAnswers.get(geographyQuestions.indexOf(question)));}
-
-            case ENTERTAINMENT -> { return answer.equals(entertainmentAnswers.get(entertainmentQuestions.indexOf(question)));}
-
-            case MUSIC -> { return answer.equals(musicAnswers.get(musicQuestions.indexOf(question)));}
-        }
-        return false;
-    }
-
-
     public String askQuestion(QuestionType questionType) {
         int random;
-        switch (questionType){
-            case HISTORY:
+        return switch (questionType) {
+            case HISTORY -> {
                 random = new Random().nextInt(historyQuestions.size());
-                return historyQuestions.get(random);
-            case GEOGRAPHY:
+                yield historyQuestions.get(random);
+            }
+            case GEOGRAPHY -> {
                 random = new Random().nextInt(geographyQuestions.size());
-                return geographyQuestions.get(random);
-            case ENTERTAINMENT:
+                yield geographyQuestions.get(random);
+            }
+            case ENTERTAINMENT -> {
                 random = new Random().nextInt(entertainmentQuestions.size());
-                return entertainmentQuestions.get(random);
-            case MUSIC:
+                yield entertainmentQuestions.get(random);
+            }
+            case MUSIC -> {
                 random = new Random().nextInt(musicQuestions.size());
-                return musicQuestions.get(random);
-        }
-        return null;
+                yield musicQuestions.get(random);
+            }
+        };
     }
 
     public String getChoices(QuestionType questionType ,String currentQuestion) {
@@ -89,6 +72,15 @@ public class Questions {
             case GEOGRAPHY -> geographyChoices.get(geographyQuestions.indexOf(currentQuestion));
             case ENTERTAINMENT -> entertainmentChoices.get(entertainmentQuestions.indexOf(currentQuestion));
             case MUSIC -> musicChoices.get(musicQuestions.indexOf(currentQuestion));
+        };
+    }
+
+    public boolean checkIfAnswerIsCorrect(QuestionType questionType ,String question, String answer){
+        return switch (questionType){
+            case HISTORY -> answer.equals(historyAnswers.get(historyQuestions.indexOf(question)));
+            case GEOGRAPHY -> answer.equals(geographyAnswers.get(geographyQuestions.indexOf(question)));
+            case ENTERTAINMENT -> answer.equals(entertainmentAnswers.get(entertainmentQuestions.indexOf(question)));
+            case MUSIC -> answer.equals(musicAnswers.get(musicQuestions.indexOf(question)));
         };
     }
 
