@@ -3,10 +3,10 @@ package Game.Score;
 import Game.Questions.QuestionType;
 
 public class Score {
-    private boolean historyPoint;
-    private boolean geographyPoint;
-    private boolean musicPoint;
-    private boolean entertainmentPoint;
+    private boolean historyPoint = true;
+    private boolean geographyPoint= true;
+    private boolean musicPoint= true;
+    private boolean entertainmentPoint= true;
     private boolean allPoints;
 
     public void updateScore(QuestionType questionType) {
@@ -17,6 +17,7 @@ public class Score {
             case ENTERTAINMENT -> setEntertainmentPoint();
         }
     }
+
     private void setAllPoints(){
         if(historyPoint && geographyPoint && musicPoint && entertainmentPoint){
             allPoints = true;

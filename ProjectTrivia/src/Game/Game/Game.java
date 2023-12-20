@@ -86,10 +86,6 @@ public class Game {
         }
     }
 
-    private boolean isThereAGameWinner() {
-        return false;
-    }
-
     public Dice getDice() {
         return dice;
     }
@@ -140,6 +136,19 @@ public class Game {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public void endGame(Server.ClientHandler player){
+
+        lobbyBroadcast("GAME IS OVER THE WINNER IS: " + player.getName());
+
+        for (Server.ClientHandler p: PLAYERS){
+            p.setGameId(0);
+            p.setMyTurn(false);
+            p.setPiece("");
+            PLAYERS.remove(p);
+        }
+        getServer().endGame(this);
     }
 
     public void setGameOver(boolean gameOver) {

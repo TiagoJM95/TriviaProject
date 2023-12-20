@@ -24,6 +24,10 @@ public class JoinGameHandler implements CommandHandler {
             clientHandler.send(Messages.FULL_LOBBY);
             return;
         }
+        if(game.isGameStarted()){
+            clientHandler.send("Game already started");
+            return;
+        }
 
         server.addPlayerToGame(clientHandler, gameId);
         clientHandler.setMyTurn(false);

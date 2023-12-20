@@ -23,7 +23,7 @@ public class AnswerHandler implements GameCommandHandler {
         String answer = player.getMessage().substring(8);
 
         if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
-            checkIfScore(game, player);
+            checkIfCanGetPoints(game, player);
             game.lobbyBroadcast("Correct Answer!");
             game.printTurnOwner();
             return;
@@ -33,15 +33,23 @@ public class AnswerHandler implements GameCommandHandler {
         game.changeTurns(player);
         game.printTurnOwner();
     }
-    private void checkIfScore(Game game,Server.ClientHandler player){
+
+    private void checkIfCanGetPoints(Game game, Server.ClientHandler player){
+
         Board.Position currentPosition = game.getBOARD().findPositionByPiece(player.getPiece());
-      int positionId = currentPosition.getPositionId();
-      if(game.getBOARD().getPrizedPositions().contains(positionId)){
-          player.getScore().updateScore(currentPosition.getQuestionType());
-          if(player.getScore().isAllPoints()){
-              game.setGameOver(true);
-              game.lobbyBroadcast("game Over");
-          }
-      }
+        int positionId = currentPosition.getPositionId();
+
+        if(game.getBOARD().getPrizedPositions().contains(positionId)){
+            player.getScore().updateScore(currentPosition.getQuestionType());
+            checkIfGameCanEnd(game, player);
+        }
+    }
+
+    private static void checkIfGameCanEnd(Game game, Server.ClientHandler player) {
+
+        if(player.getScore().isAllPoints()){
+          game.setGameOver(true);
+          game.endGame(player);
+        }
     }
 }

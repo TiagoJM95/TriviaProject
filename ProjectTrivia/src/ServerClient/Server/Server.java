@@ -114,6 +114,10 @@ public class Server {
         Server.gameCounter = gameCounter;
     }
 
+    public void endGame(Game game) {
+        games.remove(game);
+    }
+
 
     public class ClientHandler implements Runnable {
 
@@ -124,7 +128,7 @@ public class Server {
         private String piece;
         private final BufferedWriter out;
         private final Socket clientSocket;
-        private Score score;
+        private final Score score;
 
         public ClientHandler(Socket clientSocket, String name) throws IOException {
             this.score = new Score();
@@ -209,7 +213,6 @@ public class Server {
 
         public void setMyTurn(boolean myTurn) {
             this.myTurn = myTurn;
-
         }
 
         public String getPiece() {

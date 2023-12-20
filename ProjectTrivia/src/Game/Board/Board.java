@@ -185,6 +185,7 @@ public class Board {
         }
         return null;
     }
+
     public Position findPositionByPiece(String piece){
         if(piece.equals(piece1)){
             for(Position[] line : boardTemplate){
@@ -215,13 +216,14 @@ public class Board {
         }
         return null;
     }
+
     public List<Integer> getPrizedPositions() {
         return prizedPositions;
     }
 
     public static class Position{
         private int positionId = 0;
-        private QuestionType questionType;
+        private final QuestionType questionType;
 
 
         String edge = "*----------------* ";
