@@ -11,7 +11,7 @@ public class Messages {
     public static final String GAME_BEGINS = "\nGame is starting in: ";
     public static final String CORRECT_ANSWER = "The answer is correct!";
     public static final String WRONG_ANSWER = "The answer is wrong!";
-    public static final String ROLL_DICE = "The dice rolled: ";
+    public static final String ROLL_DICE = " rolled: ";
     public static final String WIN_MESSAGE = " has won the game";
     public static final String GAME_PIECES = "This is your game piece: ";
     public static final String NO_SUCH_COMMAND = " ❌ Invalid Command ❌";
