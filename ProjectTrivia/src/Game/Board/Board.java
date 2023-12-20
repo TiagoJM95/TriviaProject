@@ -1,6 +1,8 @@
 package Game.Board;
 
 import Game.Questions.QuestionType;
+import Game.Questions.Questions;
+import ServerClient.Server.Server;
 
 public class Board {
     private String piece1 = "";
@@ -257,10 +259,7 @@ public class Board {
                 }
             }
         }
-        private void formatPosition(){
 
-
-        }
 
 
         public void placePieceLine1(String piece){
