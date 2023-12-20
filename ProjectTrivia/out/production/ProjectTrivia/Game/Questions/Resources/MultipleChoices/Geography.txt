@@ -1,0 +1,20 @@
+A: Guyana       B: Suriname     C: Paraguay     D: Uruguay
+A: London       B: Berlin       C: Paris       D: Rome
+A: Nile       B: Amazon       C: Yangtze       D: Mississippi
+A: South America       B: Asia       C: Australia       D: Africa
+A: Andes       B: Alps       C: Urals       D: Himalayas
+A: China       B: Japan      C: South Korea       D: Thailand
+A: Sidney       B: Melbourne       C: Canberra       D: Brisbane
+A: Nigeria       B: Kenya       C: South Africa      D: Egypt
+A: Lake Victoria      B: Lake Tanganyika     C: Lake Malawi      D: Lake Kivu
+A: Mississippi       B: Colorado      C: Amazon       D: Nile
+A: Turkey       B: Russia       C: Kazakhstan       D: Greece
+A: Brazil       B: Peru       C: Mexico       D: Chile
+A: Toronto       B: Vancouver       C: Ottawa       D: Montreal
+A: Indian       B: Atlantic       C: Southern       D: Pacific
+A: Yen       B: Won        C: Yuan       D: Ringgit
+A: Brazil       B: Australia       C: Afghanistan      D: Canada
+A: Sahara       B: Arabian       C: Antarctic       D: Arctic
+A: Seoul       B: Tokyo       C: Beijing       D: Hanoi
+A: Tigris       B: Nile       C: Euphrates       D: Jordan
+A: Mount Elbert       B: Denali       C: Mount Rainier      D: Mount Whitney
