@@ -22,6 +22,11 @@ public class StartGameHandler implements GameCommandHandler{
             return;
         }
 
+        if(!game.isGameFull()){
+            player.send("Game lobby not full");
+            return;
+        }
+
         List<Server.ClientHandler> playerList = game.getPLAYERS();
 
         game.setGameStarted(true);
@@ -34,7 +39,7 @@ public class StartGameHandler implements GameCommandHandler{
 
         }
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             game.lobbyBroadcast(game.getBOARD().drawBoard());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

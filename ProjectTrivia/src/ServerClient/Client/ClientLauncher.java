@@ -8,7 +8,7 @@ public class ClientLauncher {
         Client client = new Client();
 
         try {
-            client.start("94.61.32.12", 8500);
+            client.start("localhost", 8500);
         } catch (IOException e) {
             System.out.println("Connection closed...");
         }

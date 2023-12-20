@@ -28,7 +28,7 @@ public class Game {
         this.gameStarted = false;
         this.GAME_ID = gameCounter;
         this.PLAYERS = new ArrayList<>();
-        this.BOARD = new Board();
+        this.BOARD = new Board(this);
         this.dice = new Dice();
         this.questions = new Questions();
     }

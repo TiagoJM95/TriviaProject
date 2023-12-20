@@ -1,21 +1,25 @@
 package Game.Board;
 
-import Game.Questions.QuestionType;
-import Game.Questions.Questions;
-import ServerClient.Server.Server;
-
 import java.util.ArrayList;
 import java.util.List;
+import Game.Questions.QuestionType;
+import Game.Game.Game;
 
 public class Board {
     private String piece1 = "";
     private String piece2 = "";
     private String piece3 = "";
+    private Game game;
+    private final List<String> scoreMusic;
+    private final List<String> scoreHistory;
+    private final List<String> scoreGeography;
+    private final List<String> scoreEntertainment;
+
     private final Position[][] boardTemplate;
 
-    private List<Integer> prizedPositions;
+    private final List<Integer> prizedPositions;
 
-    public Board(){
+    public Board(Game game){
         boardTemplate = new Position[][]{
                 new Position[]{new Position(1,QuestionType.HISTORY),new Position(2,QuestionType.ENTERTAINMENT),
                         new Position(3,QuestionType.GEOGRAPHY),new Position(4,QuestionType.HISTORY),
@@ -28,12 +32,16 @@ public class Board {
                         new Position(9,QuestionType.MUSIC)},
         };
         prizedPositions = new ArrayList<>(List.of(new Integer[]{3, 7 , 11 ,15}));
-
+        scoreMusic = new ArrayList<>(List.of(new String[]{"Music", "Music", "Music"}));
+        scoreEntertainment = new ArrayList<>(List.of(new String[]{"Entertainment", "Entertainment", "Entertainment"}));
+        scoreGeography = new ArrayList<>(List.of(new String[]{"Geography", "Geography", "Geography"}));
+        scoreHistory = new ArrayList<>(List.of(new String[]{"History", "History", "History"}));
+        this.game = game;
     }
 
     public String drawBoard(){
         return printFullLine(boardTemplate[0]) +
-                printInnerLine(boardTemplate[1]) +
+                printScoreLine(boardTemplate[1]) +
                 printInnerLine(boardTemplate[2]) +
                 printInnerLine(boardTemplate[3]) +
                 printFullLine(boardTemplate[4]);
@@ -118,6 +126,47 @@ public class Board {
         }
         buffer.append("\n");
         return buffer.toString();
+    }
+
+    public String printScoreLine(Position[] positions) {
+        StringBuilder builder = new StringBuilder();
+
+        String p1Name = game.getPLAYERS().get(0).getName();
+        String p2Name = game.getPLAYERS().get(1).getName();
+        String p3Name = game.getPLAYERS().get(2).getName();
+
+
+        builder.append(positions[0].edge).append(" ".repeat(2))
+                .append(p1Name).append(" ".repeat(19-p1Name.length()))
+                .append(p2Name).append(" ".repeat(19-p2Name.length()))
+                .append(p3Name).append(" ".repeat(19-p3Name.length()-2))
+                .append(positions[1].edge).append("\n");
+
+        builder.append(positions[0].themeLine).append(" ".repeat(57)).append(positions[1].themeLine);
+
+        builder.append("\n").append(positions[0].pieceLine1).append(" ".repeat(2))
+                .append(scoreMusic.get(0)).append(" ".repeat(19-scoreMusic.get(0).length()))
+                .append(scoreMusic.get(1)).append(" ".repeat(19-scoreMusic.get(1).length()))
+                .append(scoreMusic.get(2)).append(" ".repeat(19-scoreMusic.get(2).length()-2))
+                .append(positions[1].pieceLine1).append("\n");
+        builder.append(positions[0].pieceLine2).append(" ".repeat(2))
+                .append(scoreEntertainment.get(0)).append(" ".repeat(19-scoreEntertainment.get(0).length()))
+                .append(scoreEntertainment.get(1)).append(" ".repeat(19-scoreEntertainment.get(1).length()))
+                .append(scoreEntertainment.get(2)).append(" ".repeat(19-scoreEntertainment.get(2).length()-2))
+                .append(positions[1].pieceLine2).append("\n");
+        builder.append(positions[0].pieceLine3).append(" ".repeat(2))
+                .append(scoreGeography.get(0)).append(" ".repeat(19-scoreGeography.get(0).length()))
+                .append(scoreGeography.get(1)).append(" ".repeat(19-scoreGeography.get(1).length()))
+                .append(scoreGeography.get(2)).append(" ".repeat(19-scoreGeography.get(2).length()-2))
+                .append(positions[1].pieceLine3).append("\n");
+        builder.append(positions[0].numberLine).append(" ".repeat(2))
+                .append(scoreHistory.get(0)).append(" ".repeat(19-scoreHistory.get(0).length()))
+                .append(scoreHistory.get(1)).append(" ".repeat(19-scoreHistory.get(1).length()))
+                .append(scoreHistory.get(2)).append(" ".repeat(19-scoreHistory.get(2).length()-2))
+                .append(positions[1].numberLine).append("\n");
+        builder.append(positions[0].edge).append(" ".repeat(57)).append(positions[1].edge);
+        builder.append("\n");
+        return builder.toString();
     }
 
     public void movePiece(int diceRoll, String piece){
