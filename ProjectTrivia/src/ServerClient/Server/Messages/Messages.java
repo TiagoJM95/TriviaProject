@@ -8,7 +8,7 @@ public abstract class Messages {
     public static final String COMMAND_LIST_SERVER = """
             \n\tList of available commands:
             
-            /name <Name>-> Set your username. Case sensitive.
+            /name <Name> -> Set your username. Case sensitive.
             /online -> Shows you a list of all online players.
             /create -> Create a public game lobby.
             /start -> Start your game.
