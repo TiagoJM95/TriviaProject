@@ -14,6 +14,11 @@ public class AnswerHandler implements GameCommandHandler {
             return;
         }
 
+        if(!player.getMessage().substring(8).matches("[ABCD]")){
+            player.send(Messages.INVALID_USE_OF_COMMAND);
+            return;
+        }
+
         String answer = player.getMessage().substring(8);
 
         if(Questions.checkIfAnswerIsCorrect(game.getCurrentQuestion(), answer)){
