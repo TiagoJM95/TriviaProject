@@ -22,6 +22,7 @@ public class AnswerHandler implements GameCommandHandler {
         }
 
         String answer = player.getMessage().substring(8);
+        game.lobbyBroadcast(player.getName() + "answered : " + answer);
         QuestionType questionType = game.getBOARD().findPositionByPiece(player.getPiece()).getQuestionType();
 
         if(game.getQuestions().checkIfAnswerIsCorrect(questionType,game.getCurrentQuestion(), answer)){
