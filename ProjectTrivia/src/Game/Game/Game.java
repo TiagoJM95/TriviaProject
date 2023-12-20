@@ -15,8 +15,10 @@ public class Game {
     private final int GAME_ID;
     private final Server SERVER;
     private boolean gameStarted;
+    private boolean gameOver;
     public static final int MAX_PLAYERS = 3;
     private final List<Server.ClientHandler> PLAYERS;
+
 
 
     public Game(int gameCounter, Server server){
@@ -85,11 +87,6 @@ public class Game {
     }
 
     private boolean isThereAGameWinner() {
-        for (Server.ClientHandler p: PLAYERS){
-            if(p.getScore() == 6){
-                return true;
-            }
-        }
         return false;
     }
 
@@ -139,5 +136,13 @@ public class Game {
 
     public void setCurrentQuestion(String currentQuestion) {
         this.currentQuestion = currentQuestion;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

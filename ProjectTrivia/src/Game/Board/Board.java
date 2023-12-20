@@ -4,11 +4,16 @@ import Game.Questions.QuestionType;
 import Game.Questions.Questions;
 import ServerClient.Server.Server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private String piece1 = "";
     private String piece2 = "";
     private String piece3 = "";
     private final Position[][] boardTemplate;
+
+    private List<Integer> prizedPositions;
 
     public Board(){
         boardTemplate = new Position[][]{
@@ -22,6 +27,8 @@ public class Board {
                         new Position(11,QuestionType.ENTERTAINMENT),new Position(10,QuestionType.GEOGRAPHY),
                         new Position(9,QuestionType.MUSIC)},
         };
+        prizedPositions = new ArrayList<>(List.of(new Integer[]{3, 7 , 11 ,15}));
+
     }
 
     public String drawBoard(){
@@ -178,7 +185,7 @@ public class Board {
         }
         return null;
     }
-    private Position findPositionByPiece(String piece){
+    public Position findPositionByPiece(String piece){
         if(piece.equals(piece1)){
             for(Position[] line : boardTemplate){
                 for(Position position : line){
@@ -207,6 +214,9 @@ public class Board {
             }
         }
         return null;
+    }
+    public List<Integer> getPrizedPositions() {
+        return prizedPositions;
     }
 
     public static class Position{
@@ -255,7 +265,7 @@ public class Board {
             if (colorizeString.equals("| " + QuestionType.MUSIC + " ".repeat(15 - QuestionType.MUSIC.toString().length()) + "| ")) {
                 themeLine = colorBoard.Magenta.colorize(colorizeString);
                 if(positionId == 15) {
-                    themeLine = colorBoard.BgRed.colorize(colorString) + lastCharacterColorLess;
+                    themeLine = colorBoard.BgMagenta.colorize(colorString) + lastCharacterColorLess;
                 }
             }
         }
@@ -280,6 +290,14 @@ public class Board {
         }
         public void resetLine3(){
             pieceLine3 = "|                | ";
+        }
+
+        public QuestionType getQuestionType() {
+            return questionType;
+        }
+
+        public int getPositionId() {
+            return positionId;
         }
     }
 }

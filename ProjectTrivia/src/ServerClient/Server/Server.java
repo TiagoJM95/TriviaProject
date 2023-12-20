@@ -1,5 +1,6 @@
 package ServerClient.Server;
 
+import Game.Score.Score;
 import ServerClient.Server.Commands.Command;
 import java.io.*;
 import java.net.ServerSocket;
@@ -120,13 +121,13 @@ public class Server {
         private String name;
         private String message;
         private boolean myTurn;
-        private int score;
         private String piece;
         private final BufferedWriter out;
         private final Socket clientSocket;
+        private Score score;
 
         public ClientHandler(Socket clientSocket, String name) throws IOException {
-            this.score = 0;
+            this.score = new Score();
             this.name = name;
             this.myTurn = false;
             this.clientSocket = clientSocket;
@@ -219,12 +220,8 @@ public class Server {
             this.piece = piece;
         }
 
-        public int getScore() {
+        public Score getScore() {
             return score;
-        }
-
-        public void setScore(int score) {
-            this.score = score;
         }
     }
 }
