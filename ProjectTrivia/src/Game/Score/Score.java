@@ -9,10 +9,19 @@ public class Score {
     private boolean entertainmentPoint;
     private boolean allPoints;
 
+    public Score(){
+        historyPoint = false;
+        geographyPoint = false;
+        musicPoint = false;
+        entertainmentPoint = false;
+        allPoints = false;
+    }
+
     private void setAllPoints(){
         if(historyPoint && geographyPoint && musicPoint && entertainmentPoint){
             allPoints = true;
         }
+
     }
 
     private void setMusicPoint() {
