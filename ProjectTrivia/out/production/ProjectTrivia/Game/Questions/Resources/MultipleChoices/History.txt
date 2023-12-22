@@ -1,0 +1,25 @@
+A: 33      B: 40      C: 22        D: 27
+A: Thomas Jefferson      B: George Washington       C: John Adams       D: James Madison
+A: 1492       B: 1607        C: 1776       D: 1498
+A: Assassination of Archduke Franz Ferdinand      B: Invasion of Poland       C: Battle of Stalingrad     D: Signing of the Treaty of Versailles
+A: Friedrich Engels      B: Vladimir Lenin       C: Joseph Stalin       D: Leon Trotsky
+A: Mesopotamians       B: Greeks       C: Egyptians       D: Romans
+A: States rights       B: Slavery       C: Economic differences       D: Taxation without representation
+A: Joseph Stalin       B: Nikita Khrushchev       C: Leon Trotsky       D: Mikhail Gorbachev
+A: Queen Victoria       B: Queen Mary       C: Queen Elizabeth I       D: Queen Anne
+A: Established the principle of habeas corpus      B: Limited the power of the monarchy     C: Ended the Hundred Years War      D: Launched the protestant Reformation
+A: Rome       B: Constantinople       C: Athens       D: Alexandria
+A: Confucius       B: Sun Tzu       C: Qin Shi Huang       D: Emperor Wu
+A: Search for the Northwest Passage      B: Exploration of the Louisiana Purchase      C: Trade with Native American tribes      D: Conquest of the Oregon Territory
+A: Egyptians       B: Greeks       C: Romans       D: Sumerians
+A: Vladimir Putin       B: Leon Trotsky       C: Joseph Stalin       D: Nikita Khrushchev
+A: 1765       B: 1776       C: 1789       D: 1801
+A: Battle of Hastings       B: War of the Roses       C: Execution of Charles I       D: William and Mary´s accession
+A: Jawaharial Nehru       B: Mahatma Gandhi       C: Subhas Chandra Bose       D: Sardar Patel
+A: Ferdinand Magellan       B: Christopher Columbus       C: Vasco da Gama       D: James Cook
+A: John Adams       B: Thomas Jefferson       C: Benjamin Franklin       D: George Washington
+A: Richard Nixon      B: Andrew Johnson      C: Bill Clinton      D: Donald Trump
+A: 1985      B: 1989      C: 1991      D: 1979
+A: Angela Merkel      B: Margaret Thatcher      C: Theresa May      D: Indira Gandhi
+A: American Revolutionary War      B: War of 1812      C: Civil War      D: World War I
+A: Florence Nightingale      B: Clara Barton      C: Mary Seacole      D: Dorothea Dix

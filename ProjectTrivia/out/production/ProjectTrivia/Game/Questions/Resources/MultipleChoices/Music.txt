@@ -1,0 +1,25 @@
+A: System     B: Praticamente       C: Sinceramente Porto       D: Casca Grossa
+A: Elvis Presley      B: Michael Jackson       C: Prince       D: Justin Bieber
+A: Piano       B: Violin       C: Cello      D: Trumpet
+A: Sgt. Pepper´s Lonely Hearts Club Band      B: The White Album      C: Abbey Road       D: Let It Be
+A: Katy Perry       B: Taylor Swift       C: Adele       D: Rihanna
+A: Jazz       B: Rock       C: Techno       D: Country
+A: Bono       B: Sting       C: Chris Martin       D: Dave Grohl
+A: Mozart     B: Beethoven      C: Bach       D: Franz Schubert
+A: Fender Stratocaster       B: Gibson Les Paul       C: Rickenbacker 360       D: Gretsch White Falcon
+A: Billie Jean       B: Thriller       C: Beat It       D: Man in the Mirror
+A: Clarinet       B: Oboe       C: Flute       D: Bassoon
+A: Whitney Houston       B: Diana Ross       C: Aretha Franklin       D: Tine Turner
+A: Led Zeppelin       B: The Rolling Stones      C: The Who       D: Pink Floyd
+A: Snoop Dogg       B: Jay-Z       C: Eminem       D: Kanye West
+A: Woodstock       B: Coachella       C: Lollapalooza       D: Glastonbury
+A: Pyotr Ilyich Tchaikovsky       B: Igor Stravinsky       C: Johann Sebastian Bach       D: Wolfgang Amadeus Mozart
+A: Brazil       B: Spain       C: India       D: Cuba
+A: Justin Bieber      B: Bruno Mars       C: Ed Sheeran       D: Shawn Mendes
+A: Drum Set       B: Xylophone       C: Tambourine       D: Conga
+A: Buddy Holly       B: Little Richard       C: Chuck Berry       D: Jerry Lee Lewis
+A: Madonna      B: Beyoncé      C: Lady Gaga      D: Britney Spears
+A) AC/DC      B: Led Zeppelin      C: Guns N' Roses      D: Queen
+A: Eric Clapton      B: Brian May       C: Jimmy Page       D: Jimi Hendrix
+A: Ludwig van Beethoven      B: Wolfgang Amadeus Mozart      C: Antonio Vivaldi      D: Johann Sebastian Bach
+A: Jay-Z      B: Kendrick Lamar       C: Kanye West      D: Eminem
